@@ -44,33 +44,49 @@
                   
                         <div class="card-body">
                             <div class="tab-content">
+                                <button type="button" class="btn btn-sm btn-primary" (click)="add(addEmployeeModal)"><i class="fa fa-user-plus" aria-hidden="true"></i> ADD NEW</button> &nbsp; 
+                                <button type="button" class="btn btn-sm btn-success" (click)="downloadFile('export', 'emp')"><i class="fa fa-download" aria-hidden="true"></i> EXPORT</button>
+                                <br>
+                                <br>
                                 <div class="active tab-pane" id="activity">
-                                
+                                    
                                     <div class="post">
-                                        <table *ngIf="users !== undefined" datatable [dtOptions]="dtOptions" class="row-border hover" id="" class="table table-striped table-bordered" style="width:100%; padding: 10px;">
+                                        <table *ngIf="users !== undefined" datatable [dtOptions]="dtOptions" class="row-border hover" id="" class="table table-striped table-bordered" style="width:100%; border: none;">
                                             <thead>
-                                                <tr>
-                                                <th>ID</th>
+                                                <tr> 
+                                                <th>Entity</th>
+                                                <th>ID#</th>
                                                 <th>Name</th>
-                                                <th>Email</th>
-                                                <th>Actions</th>
+                                                <!-- <th>Email</th> -->
+                                                <th>Date Hired</th>
+                                                <th>Status</th>
+                                                <th>Subgroup</th>
+                                                <th>Position</th>
+                                                <th class="text-center">Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody *ngIf="users?.length != 0">
                                                 <tr *ngFor="let user of users">
-                                                <td> 
+                                                <!-- <td> 
                                                     <a href="#" routerLink="/employees/{{user.id}}"> {{ user.id }} </a> 
-                                                </td>
-                                                <td>{{ user.name }}</td>
-                                                <td>{{ user.email }}</td>
-                                                <td><a href="#" [routerLink]="" (click)="edit(editProfileModal, user)"> Edit </a> | 
-                                                    <a href="#"> Delete </a> | 
-                                                    <a href="#" [routerLink]="" (click)="view(viewProfileModal, user)"> View </a></td>
+                                                </td> -->
+                                                <td>{{ user.entity_code }}</td>
+                                                <td>{{ user.employee_id }}</td>
+                                                <td>{{ user.employee_name }}</td>
+                                                <!-- <td>{{ user.email_address }}</td> -->
+                                                <td>{{ user.date_hired }}</td>
+                                                <td>{{ user.employment_status }}</td>
+                                                <td>{{ user.employee_subgroup }}</td>
+                                                <td>{{ user.position }}</td>
+                                                <td class="text-center">
+                                                    <a href="" [routerLink]="" (click)="edit(editEmployeeModal, user)">&nbsp; <i class="fas fa-pencil-alt"> </i> </a> 
+                                                    <a  [routerLink]="" (click)="remove(user)"> <i class="fas fa-trash-alt"> </i> </a> 
+                                                    <a  [routerLink]="" (click)="view(viewEmployeeModal, user)"> <i class="fas fa-eye"> </i> </a> 
                                                 </tr>
                                             </tbody>
                                             <tbody *ngIf="users?.length == 0">
                                                 <tr>
-                                                <td colspan="4" class="no-data-available">No data!</td>
+                                                <td colspan="8" class="no-data-available">No data!</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -87,40 +103,615 @@
 </div>
 
 
-<ng-template #editProfileModal let-modal> 
+<ng-template #addEmployeeModal let-modal>
     <div class="modal-header">
-        <h5 class="modal-title" id="editProfileLabel">Edit Profile</h5>
+        <h5 class="modal-title" id="editProfileLabel">ADD EMPLOYEE</h5>
         <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
         
     <div class="modal-body">
-        <form [formGroup]="editProfileForm" (ngSubmit)="onSubmit()">
-            <div class="form-group row">
-            <label for="name" class="col-sm-4 col-form-label">Name</label>
-            <div class="col-sm-8">
-            <input type="text" class="form-control" formControlName="name" id="name">
+        <form [formGroup]="employeeForm" (ngSubmit)="onSubmitSave()">
+
+            <div class="row">
+                
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>EMPLOYEE ID</label>
+                        <input type="text" class="form-control" formControlName="employee_id" id="employee_id" placeholder="EMPLOYEE ID" required="true">
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>LASTNAME</label>
+                        <input type="text" class="form-control" formControlName="last_name" id="last_name" placeholder="LASTNAME" required="">
+                    </div>
+                </div>
+    
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>FIRSTNAME</label>
+                        <input type="text" class="form-control" formControlName="first_name" placeholder="FIRSTNAME" id="first_name">
+                    </div>
+                </div>
+    
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>MIDDLENAME</label>
+                        <input type="text" class="form-control" formControlName="middle_name" placeholder="MIDDLENAME" id="middle_name">
+                    </div>
+                </div>
+    
+                <div class="col-md-1">
+                    <div class="form-group">
+                        <label>AFFIX</label>
+                        <input type="text" class="form-control" formControlName="affix" placeholder="AFFIX" id="affix">
+                    </div>
+                </div>
             </div>
+
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>REGION</label>
+                        <select class="form-control" formControlName="region" (ngModelChange)="onChangeRegion($event)" placeholder="Select Region">
+                            <option [value]=null>SELECT REGION</option>
+                            <option *ngFor="let region of dataRegions" [value]="region.id">{{region.text}}</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>PROVINCE</label>
+                        <select class="form-control" formControlName="province" (ngModelChange)="onChangeProvince($event)" placeholder="Select Province">
+                            <option [value]=null>SELECT PROVINCE</option>
+                            <option *ngFor="let province of dataProvinces" [value]="province.id">{{province.text}}</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>CITY/MUNICIPALITY</label>
+                        <select class="form-control" formControlName="city_municipality" (ngModelChange)="onChangeCityMunicipality($event)" placeholder="Select Town">
+                            <option [value]=null>SELECT TOWN</option>
+                            <option *ngFor="let town of dataTowns" [value]="town.id">{{town.text}}</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>BARANGAY</label>
+                        <select class="form-control" formControlName="brgy" placeholder="Select Town">
+                            <option [value]=null>SELECT BRGY</option>
+                            <option *ngFor="let barangay of dataBarangays" [value]="barangay.id">{{barangay.text}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>STREET</label>
+                        <input type="text" class="form-control" formControlName="street" placeholder="STREET" id="street">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>LOT NO.</label>
+                        <input type="text" class="form-control" formControlName="lot_no" placeholder="LOT NO." id="lot_no">
+                    </div>
+                </div>
+
             </div>
-            <div class="form-group row">
-            <label for="email" class="col-sm-4 col-form-label">Email</label>
-            <div class="col-sm-8">
-            <input type="email" class="form-control" formControlName="email" id="email">
+
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>GENDER</label>
+                        <select class="form-control" formControlName="gender" id="gender">
+                            <option [value]=null>SELECT GENDER</option>
+                            <option>Male</option>
+                            <option>Female</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>CIVIL STATUS</label>
+                        <select class="form-control" formControlName="civil_status" id="civil_status">
+                            <option [value]=null>SELECT CIVIL STATUS<option>
+                            <option>Single</option>
+                            <option>Married</option>
+                            <option>Divorced</option>
+                            <option>Widowed</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>DATE OF BIRTH</label>
+                        <input type="date" class="form-control" formControlName="date_of_birth" id="date_of_birth">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>MOBILE NO.</label>
+                        <input type="text" class="form-control" formControlName="mobile_number" placeholder="MOBILE NO." id="mobile_number">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>ENTITY</label>
+                        <select class="form-control" formControlName="entity_code" id="entity_code">
+                            <option [value]=null>SELECT ENTITY</option>
+                            <option>PLDT</option>
+                            <option>SMART</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>POSITION</label>
+                        <input type="text" class="form-control" formControlName="position" placeholder="POSITION" id="position">
+                    </div>
+                </div>
+
             </div>
+
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>EMPLOYMENT STATUS</label>
+                        <select class="form-control" formControlName="employment_status" id="employment_status">
+                            <option [value]=null>SELECT STATUS</option>
+                            <option>Regular</option>
+                            <option>Probationary</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>EMPLOYEE SUBGROUP</label>
+                        <select class="form-control" formControlName="employee_subgroup" id="employee_subgroup">
+                            <option [value]=null>SELECT SUBGROUP</option>
+                            <option>Officer</option>
+                            <option>Executive</option>
+                            <option>Supervisor</option>
+                            <option>Rank & File</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>LEADERSHIP ROLE</label>
+                        <input type="text" class="form-control" formControlName="leadership_role" placeholder="LEADERSHIP ROLE" id="leadership_role">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>DATE HIRED</label>
+                        <input type="date" class="form-control" formControlName="date_hired" id="date_hired">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>EMAIL ADDRESS</label>
+                        <input type="text" class="form-control" formControlName="email_address" placeholder="EMAIL ADDRESS" id="email_address">
+                    </div>
+                </div>
+
+                <!-- <div class="col-md-2">
+                    <div class="form-group">
+                        <label>OFFICE LOCATION</label>
+                        <input type="text" class="form-control" formControlName="office_location" id="office_location">
+                    </div>
+                </div> -->
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>IMMEDIATE HEAD</label>
+                        <ng-select2 style="width: 100%" formControlName="immediate_supervisor"[options]="options">
+                        </ng-select2>
+                    </div>
+                </div>
             </div>
+
+            <div class="row">
+                
+                <div class="col-md-1">
+                    <div class="form-group">
+                        <label>FLOOR NO.</label>
+                        <!-- <input type="text" class="form-control" formControlName="office_floor" placeholder="FLOOR NO." id="office_floor"> -->
+                        <ng-select2 style="width: 100%" formControlName="office_floor" [data]="floors" [options]="optionsFloor" >
+                        </ng-select2>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>OFFICE BUILDING</label>
+                        <!-- <input type="text" class="form-control" formControlName="office_building" id="office_building"> -->
+                        <ng-select2 style="width: 100%" formControlName="office_building" [options]="optionsBuilding">
+                        </ng-select2>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>CENTER/REGION</label>
+                        <select class="form-control" formControlName="center" (ngModelChange)="onChangeCenter($event)" placeholder="Select Center">
+                            <option [value]=null>SELECT CENTER</option>
+                            <option *ngFor="let center of dataCenters" [value]="center.id">{{center.text}}</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>DIVISION/AREA</label>
+                        <select class="form-control" formControlName="division" (ngModelChange)="onChangeDivision($event)" placeholder="Select Division">
+                            <option [value]=null>SELECT DIVISION</option>
+                            <option *ngFor="let division of dataDivisions" [value]="division.id">{{division.text}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>SECTION/CLUSTER</label>
+                        <select class="form-control" formControlName="section" (ngModelChange)="onChangeDivision($event)" placeholder="Select Section">
+                            <option [value]=null>SELECT SECTION</option>
+                            <option *ngFor="let section of dataSections" [value]="section.id">{{section.text}}</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+ 
             <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
-            <button type="submit" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">CLOSE</button>
+            <button type="submit" class="btn btn-primary">SAVE</button>
             </div>
         </form>
+
     </div>
 </ng-template>
 
 
-<ng-template #viewProfileModal let-modal> 
+<ng-template #editEmployeeModal let-modal>
     <div class="modal-header">
-        <h5 class="modal-title" id="editProfileLabel">Profile</h5>
+        <h5 class="modal-title" id="editProfileLabel">EDIT EMPLOYEE PROFILE</h5>
+        <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+        
+    <div class="modal-body">
+        <form [formGroup]="employeeForm" (ngSubmit)="onSubmitUpdate()">
+
+            <div class="row">
+                
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>EMPLOYEE ID</label>
+                        <input type="text" class="form-control" formControlName="employee_id" id="employee_id" placeholder="Employee ID" required="true">
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>LASTNAME</label>
+                        <input type="text" class="form-control" formControlName="last_name" id="last_name" placeholder="LASTNAME" required="">
+                    </div>
+                </div>
+    
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>FIRSTNAME</label>
+                        <input type="text" class="form-control" formControlName="first_name" placeholder="FIRSTNAME"  id="first_name">
+                    </div>
+                </div>
+    
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>MIDDLENAME</label>
+                        <input type="text" class="form-control" formControlName="middle_name" placeholder="MIDDLENAME"  id="middle_name">
+                    </div>
+                </div>
+    
+                <div class="col-md-1">
+                    <div class="form-group">
+                        <label>AFFIX</label>
+                        <input type="text" class="form-control" formControlName="affix" placeholder="AFFIX"  id="affix">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>REGION</label>
+                        <select class="form-control" formControlName="region" (ngModelChange)="onChangeRegion($event)" placeholder="Select Region">
+                            <option [value]=null>SELECT REGION</option>
+                            <option *ngFor="let region of dataRegions" [value]="region.id">{{region.text}}</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>PROVINCE</label>
+                        <select class="form-control" formControlName="province" (ngModelChange)="onChangeProvince($event)" placeholder="Select Province">
+                            <option [value]=null>SELECT PROVINCE</option>
+                            <option *ngFor="let province of dataProvinces" [value]="province.id">{{province.text}}</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>CITY/MUNICIPALITY</label>
+                        <select class="form-control" formControlName="city_municipality" (ngModelChange)="onChangeCityMunicipality($event)" placeholder="Select Town">
+                            <option [value]=null>SELECT TOWN</option>
+                            <option *ngFor="let town of dataTowns" [value]="town.id">{{town.text}}</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>BARANGAY</label>
+                        <select class="form-control" formControlName="brgy" placeholder="Select Town">
+                            <option [value]=null>SELECT BRGY</option>
+                            <option *ngFor="let barangay of dataBarangays" [value]="barangay.id">{{barangay.text}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>STREET</label>
+                        <input type="text" class="form-control" formControlName="street" placeholder="STREET" id="street">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>LOT NO.</label>
+                        <input type="text" class="form-control" formControlName="lot_no" placeholder="LOT NO." id="lot_no">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>GENDER</label>
+                        <select class="form-control" formControlName="gender" id="gender">
+                            <option [value]=null>SELECT GENDER</option>
+                            <option>Male</option>
+                            <option>Female</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>CIVIL STATUS</label>
+                        <select class="form-control" formControlName="civil_status" id="civil_status">
+                            <option [value]=null>SELECT CIVIL STATUS<option>
+                            <option>Single</option>
+                            <option>Married</option>
+                            <option>Divorced</option>
+                            <option>Widowed</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>DATE OF BIRTH</label>
+                        <input type="date" class="form-control" formControlName="date_of_birth" id="date_of_birth">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>MOBILE NO.</label>
+                        <input type="text" class="form-control" formControlName="mobile_number" pattern="[0-9]" placeholder="MOBILE NO." id="mobile_number">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>ENTITY</label>
+                        <select class="form-control" formControlName="entity_code" id="entity_code">
+                            <option [value]=null>SELECT ENTITY</option>
+                            <option>PLDT</option>
+                            <option>SMART</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>POSITION</label>
+                        <input type="text" class="form-control" formControlName="position" placeholder="POSITION" id="position">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>EMPLOYMENT STATUS</label>
+                        <select class="form-control" formControlName="employment_status" id="employment_status">
+                            <option [value]=null>SELECT STATUS</option>
+                            <option>Regular</option>
+                            <option>Probationary</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>EMPLOYEE SUBGROUP</label>
+                        <select class="form-control" formControlName="employee_subgroup" id="employee_subgroup">
+                            <option [value]=null>SELECT SUBGROUP</option>
+                            <option>Officer</option>
+                            <option>Executive</option>
+                            <option>Supervisor</option>
+                            <option>Rank & File</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>LEADERSHIP ROLE</label>
+                        <input type="text" class="form-control" formControlName="leadership_role" placeholder="LEADERSHIP ROLE" id="leadership_role">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>DATE HIRED</label>
+                        <input type="date" class="form-control" formControlName="date_hired" id="date_hired">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>EMAIL ADDRESS</label>
+                        <input type="text" class="form-control" formControlName="email_address" placeholder="EMAIL ADDRESS" id="email_address">
+                    </div>
+                </div>
+
+                <!-- <div class="col-md-2">
+                    <div class="form-group">
+                        <label>OFFICE LOCATION</label>
+                        <input type="text" class="form-control" formControlName="office_location" id="office_location">
+                    </div>
+                </div> -->
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>IMMEDIATE HEAD</label>
+                        <ng-select2 style="width: 100%" formControlName="immediate_supervisor" [data]="defaultImmediateSupervisor" [options]="options">
+                        </ng-select2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                
+                <div class="col-md-1">
+                    <div class="form-group">
+                        <label>FLOOR NO.</label>
+                        <!-- <input type="text" class="form-control" formControlName="office_floor" id="office_floor"> -->
+                        <ng-select2 style="width: 100%" formControlName="office_floor" [data]="floors" [options]="optionsFloor" >
+                        </ng-select2>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>OFFICE BUILDING</label>
+                        <!-- <input type="text" class="form-control" formControlName="office_building" id="office_building"> -->
+                        <ng-select2 style="width: 100%" formControlName="office_building" [data]="defaultBuilding" [options]="optionsBuilding">
+                        </ng-select2>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>CENTER/REGION</label>
+                        <select class="form-control" formControlName="center" (ngModelChange)="onChangeCenter($event)" placeholder="Select Center">
+                            <option [value]=null>SELECT CENTER</option>
+                            <option *ngFor="let center of dataCenters" [value]="center.id">{{center.text}}</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>DIVISION/AREA</label>
+                        <select class="form-control" formControlName="division" (ngModelChange)="onChangeDivision($event)" placeholder="Select Division">
+                            <option [value]=null>SELECT DIVISION</option>
+                            <option *ngFor="let division of dataDivisions" [value]="division.id">{{division.text}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>SECTION/CLUSTER</label>
+                        <select class="form-control" formControlName="section" (ngModelChange)="onChangeDivision($event)" placeholder="Select Section">
+                            <option [value]=null>SELECT SECTION</option>
+                            <option *ngFor="let section of dataSections" [value]="section.id">{{section.text}}</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>ACTION TYPE</label>
+                        <select class="form-control" formControlName="action_type" id="action_type">
+                            <option [value]=null>SELECT TYPE</option>
+                            <option>Transferred</option>
+                            <option>Separated</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>ACTION DATE</label>
+                        <input type="date" class="form-control" formControlName="action_date" id="action_date">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>REMARKS</label>
+                        <textarea class="form-control" formControlName="remarks" id="remarks">
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+ 
+            <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-secondary" (click)="modal.dismiss()">CLOSE</button>
+            <button type="submit" class="btn btn-sm btn-primary">SAVE CHANGES</button>
+            </div>
+        </form>
+
+    </div>
+</ng-template>
+
+
+<ng-template #viewEmployeeModal let-modal> 
+    <div class="modal-header">
+        <h5 class="modal-title" id="editProfileLabel">Employee Profile</h5>
         <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -134,12 +725,15 @@
                     <div class="card card-primary card-outline">
                         <div class="card-body box-profile">
                             <div class="text-center">
-                                <img class="profile-user-img img-fluid img-circle" src="assets/img/avatar.png" alt="User profile picture">
+                                <img class="profile-user-img img-fluid img-circle" src="assets/img/nlffos/EBS.png" alt="User profile picture">
                             </div>
-                            <h3 class="profile-username text-center">Erik Erik</h3>
-                            <p class="text-muted text-center">Telecom Engineer</p>
+                            <h3 class="profile-username text-center">{{user.first_name}} {{user.last_name}}</h3>
+                            <p class="text-muted text-center">
+                                {{user.entity_code}} {{user.employment_status}} <br>
+                                {{user.employee_subgroup}} <br>
+                                {{user.position}}</p>
                             <!-- <p class="text-muted text-center">North Luzon FFOS</p> -->
-                            <ul class="list-group list-group-unbordered mb-3" style="font-size: 12px;">
+                            <!-- <ul class="list-group list-group-unbordered mb-3" style="font-size: 12px;">
                                 <li class="list-group-item">
                                     <b>Date Hired</b> <a class="float-right">12/01/2013</a>
                                 </li>
@@ -149,7 +743,7 @@
                                 <li class="list-group-item">
                                     <b>Gender</b> <a class="float-right">Male</a>
                                 </li>
-                            </ul>
+                            </ul> -->
                             <!-- <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a> -->
                         </div>
                     
@@ -163,14 +757,31 @@
                         <div class="card-body">
                             <strong><i class="fas fa-book mr-1"></i> Education</strong>
                             <p>
-                                B.S. in Information Technology
+                                B.S. in Information Technology at St. Paul University Philippines (2009 - 2013)
                             </p>
                             <hr>
 
-                          
-                            <strong><i class="fas fa-map-marker-alt mr-1"></i>Office Location</strong>
+                            <strong><i class="fas fa-sitemap"></i> Organization</strong>
                             <p>
-                                Minanga Sur, Iguig, Cagayan 3500
+                                North Luzon Fixed Field Operations Support
+                            </p>
+                            <hr>
+
+                            <strong><i class="fas fa-calendar-day"></i> Date Hired</strong>
+                            <p>
+                                {{user.date_hired_format1}}
+                            </p>
+                            <hr>
+
+                            <strong><i class="fas fa-clock"></i> LOS</strong>
+                            <p> {{user.los}}
+                            </p>
+ 
+                            <hr>
+
+                            <strong><i class="fas fa-map-marker-alt mr-1"></i> Office Location</strong>
+                            <p>
+                                {{user.office_floor}} {{user.office_building_name}}
                             </p>
                             <hr>
 
@@ -185,178 +796,360 @@
                     <div class="card">
                         <div class="card-header p-2">
                             <ul class="nav nav-pills">
-                                <li class="nav-item"><a class="nav-link active" href="#orgdetails" data-toggle="tab">Organization</a></li>
-                                <!-- <li class="nav-item"><a class="nav-link active" href="#basicinfo" data-toggle="tab">Basic Info</a></li> -->
-                                <!-- <li class="nav-item"><a class="nav-link" href="#trainings" data-toggle="tab">Trainings</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#certifications" data-toggle="tab">Certificeations</a></li> -->
-    
-                                <li class="nav-item"><a class="nav-link" href="#members" data-toggle="tab">Members</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#tte" data-toggle="tab">TTE</a></li>
+                                <li class="nav-item"><a class="nav-link active" href="#members" data-toggle="tab">Team Members</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#trainings" data-toggle="tab">Trainings and Certification</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#tools" data-toggle="tab">TTE</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#sv" data-toggle="tab">SV</a></li>
                             </ul>
                         </div>
                         <div class="card-body">
                             <div class="tab-content">
-                                <div class="active tab-pane" id="basicinfo">
-                            
+                                <div class="active tab-pane" id="members">
+                                    
                                     <div class="post">
-                                        <strong><i class="nav-icon fas fa-info-circle"></i> Trainings</strong>
-                                        <p class="text-muted">
-                                            <span class="tag tag-danger">UI Design</span>
-                                            <span class="tag tag-success">Coding</span>
-                                            <span class="tag tag-info">Javascript</span>
-                                            <span class="tag tag-warning">PHP</span>
-                                            <span class="tag tag-primary">Node.js</span>
-                                        </p>
-                                    </div>
+                                        <strong><i class="nav-icon fas fa-users"></i> Team Members</strong>
 
-                                    <div class="post">
-                                        <strong><i class="nav-icon fas fa-certificate"></i> Certifications</strong>
-                                        <p class="text-muted">
-                                            <span class="tag tag-danger">UI Design</span>
-                                            <span class="tag tag-success">Coding</span>
-                                            <span class="tag tag-info">Javascript</span>
-                                            <span class="tag tag-warning">PHP</span>
-                                            <span class="tag tag-primary">Node.js</span>
-                                        </p>
+                                      
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="card card-widget widget-user-2 shadow-sm">
+                                                
+                                                    <div class="widget-user-header bg-info">
+                                                        <div class="widget-user-image">
+                                                        <img class="img-circle elevation-2" src="assets/img/nlffos/new/ebs4.png" alt="User Avatar">
+                                                        </div>
+                                                        
+                                                        <h3 class="widget-user-username">Erikson Supnet</h3>
+                                                        <!-- <h5 class="widget-user-desc">Telecom Engineer</h5> -->
+                                                        </div>
+                                                        <div class="card-footer p-0">
+                                                        <ul class="nav flex-column">
+                                                            <li class="nav-item">
+                                                                <span class="nav-link">
+                                                                    Telecom Engineer 
+                                                                </span>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <span class="nav-link">
+                                                                    NL FFOS
+                                                                </span>
+                                                            </li>
+                                                
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <div class="card card-widget widget-user-2 shadow-sm">
+                                                
+                                                    <div class="widget-user-header bg-info">
+                                                        <div class="widget-user-image">
+                                                        <img class="img-circle elevation-2" src="assets/img/nlffos/new/ebs4.png" alt="User Avatar">
+                                                        </div>
+                                                        
+                                                        <h3 class="widget-user-username">Erikson Supnet</h3>
+                                                        <!-- <h5 class="widget-user-desc">Telecom Engineer</h5> -->
+                                                        </div>
+                                                        <div class="card-footer p-0">
+                                                        <ul class="nav flex-column">
+                                                            <li class="nav-item">
+                                                                <span class="nav-link">
+                                                                    Telecom Engineer 
+                                                                </span>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <span class="nav-link">
+                                                                    NL FFOS
+                                                                </span>
+                                                            </li>
+                                                
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <div class="card card-widget widget-user-2 shadow-sm">
+                                                
+                                                    <div class="widget-user-header bg-info">
+                                                        <div class="widget-user-image">
+                                                        <img class="img-circle elevation-2" src="assets/img/nlffos/new/ebs4.png" alt="User Avatar">
+                                                        </div>
+                                                        
+                                                        <h3 class="widget-user-username">Erikson Supnet</h3>
+                                                        <!-- <h5 class="widget-user-desc">Telecom Engineer</h5> -->
+                                                        </div>
+                                                        <div class="card-footer p-0">
+                                                        <ul class="nav flex-column">
+                                                            <li class="nav-item">
+                                                                <span class="nav-link">
+                                                                    Telecom Engineer 
+                                                                </span>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <span class="nav-link">
+                                                                    NL FFOS
+                                                                </span>
+                                                            </li>
+                                                
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <div class="card card-widget widget-user-2 shadow-sm">
+                                                
+                                                    <div class="widget-user-header bg-info">
+                                                        <div class="widget-user-image">
+                                                        <img class="img-circle elevation-2" src="assets/img/nlffos/new/ebs4.png" alt="User Avatar">
+                                                        </div>
+                                                        
+                                                        <h3 class="widget-user-username">Erikson Supnet</h3>
+                                                        <!-- <h5 class="widget-user-desc">Telecom Engineer</h5> -->
+                                                        </div>
+                                                        <div class="card-footer p-0">
+                                                        <ul class="nav flex-column">
+                                                            <li class="nav-item">
+                                                                <span class="nav-link">
+                                                                    Telecom Engineer 
+                                                                </span>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <span class="nav-link">
+                                                                    NL FFOS
+                                                                </span>
+                                                            </li>
+                                                
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <div class="card card-widget widget-user-2 shadow-sm">
+                                                
+                                                    <div class="widget-user-header bg-info">
+                                                        <div class="widget-user-image">
+                                                        <img class="img-circle elevation-2" src="assets/img/nlffos/new/ebs4.png" alt="User Avatar">
+                                                        </div>
+                                                        
+                                                        <h3 class="widget-user-username">Erikson Supnet</h3>
+                                                        <!-- <h5 class="widget-user-desc">Telecom Engineer</h5> -->
+                                                        </div>
+                                                        <div class="card-footer p-0">
+                                                        <ul class="nav flex-column">
+                                                            <li class="nav-item">
+                                                                <span class="nav-link">
+                                                                    Telecom Engineer 
+                                                                </span>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <span class="nav-link">
+                                                                    NL FFOS
+                                                                </span>
+                                                            </li>
+                                                
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            
+                                        
+                                        </div>
+                                      
+                                        <!-- <ul class="users-list clearfix">
+                                            <li>
+                                                <img src="assets/img/nlffos/new/ebs4.png" alt="User Image">
+                                                <a class="users-list-name" href="#">Erikson Supnet</a>
+                                                <span class="users-list-date">Telecom Engineer</span>
+                                            </li>
+                                            <li>
+                                            <img src="assets/img/user8-128x128.jpg" alt="User Image">
+                                            <a class="users-list-name" href="#">Norman</a>
+                                            <span class="users-list-date">Telecom Engineer</span>
+                                            </li>
+                                            <li>
+                                            <img src="assets/img/user7-128x128.jpg" alt="User Image">
+                                            <a class="users-list-name" href="#">Jane</a>
+                                            <span class="users-list-date">Telecom Engineer</span>
+                                            </li>
+                                            <li>
+                                            <img src="assets/img/user6-128x128.jpg" alt="User Image">
+                                            <a class="users-list-name" href="#">John</a>
+                                            <span class="users-list-date">Telecom Engineer</span>
+                                            </li>
+                                            <li>
+                                            <img src="assets/img/user2-160x160.jpg" alt="User Image">
+                                            <a class="users-list-name" href="#">Alexander</a>
+                                            <span class="users-list-date">Telecom Engineer</span>
+                                            </li>
+                                            <li>
+                                            <img src="assets/img/user5-128x128.jpg" alt="User Image">
+                                            <a class="users-list-name" href="#">Sarah</a>
+                                            <span class="users-list-date">Telecom Engineer</span>
+                                            </li>
+                                            <li>
+                                            <img src="assets/img/user4-128x128.jpg" alt="User Image">
+                                            <a class="users-list-name" href="#">Nora</a>
+                                            <span class="users-list-date">Telecom Engineer</span>
+                                            </li>
+                                            <li>
+                                            <img src="assets/img/user3-128x128.jpg" alt="User Image">
+                                            <a class="users-list-name" href="#">Nadia</a>
+                                            <span class="users-list-date">Telecom Engineer</span>
+                                            </li>
+                                        </ul>
+                                             -->
+                                
+                                    
+                                        <!-- <div class="card-footer text-center">
+                                        <a href="javascript:">View All Users</a>
+                                        </div> -->
+                                 
                                     </div>
- 
                                     
                                 </div>
                                 
-                                <div class="tab-pane" id="orgdetails">
+                                <div class="tab-pane" id="trainings">
                                 
-                                <div class="timeline timeline-inverse">
+                                    <div class="post">
+                                        <strong><i class="nav-icon fas fa-certificate"></i> Trainings and Certification</strong>
+                                        
+                                        <hr>
+                                        <table *ngIf="trainingHistory !== undefined" datatable [dtOptions]="dtOptionsTrainingHistory" class="row-border hover" class="table table-striped table-bordered" style="width:100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Title</th>
+                                                    <th>Certification</th>
+                                                    <th>Start Date</th>
+                                                    <th>End Date</th>
+                                                    <th>Title Validity Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody *ngIf="trainingHistory?.length != 0">
+                                                <tr *ngFor="let training of trainingHistory">
+                                                    <td>{{ training.title }}</td>
+                                                    <td>{{ training.certification }}</td>
+                                                    <td>{{ training.start_date }}</td>
+                                                    <td>{{ training.end_date }}</td>
+                                                    <td>{{ training.title_validity_date }}</td>
+                                                </tr>
+                                            </tbody>
+                                            <tbody *ngIf="trainingHistory?.length == 0">
+                                                <tr>
+                                                    <td colspan="5" class="no-data-available text-center">No data available in table</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    
+                                        
+                                        
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane" id="tools">
                                 
-                                <div class="time-label">
-                                <span class="bg-danger">
-                                10 Feb. 2014
-                                </span>
+                                    <div class="post">
+                                        <strong><i class="nav-icon fas fa-tools"></i> Tools and Testing Equipments</strong>
+                                        
+                                        <hr>
+                                        <table *ngIf="tte !== undefined" datatable [dtOptions]="dtOptionsTte" class="row-border hover" class="table table-striped table-bordered" style="width:100%; border: none;">
+                                            <thead>
+                                                <tr>
+                                                <!-- <th>Code</th> -->
+                                                <!-- <th>ID#</th> -->
+                                                
+                                                <th>Description</th>
+                                                <th>Category</th>
+                                                <th>Quantiy</th>
+                                                <th>Brand</th>
+                                                <th>Serial Number</th>
+                                                <th>Calibration Validity Date</th>
+                                                <th>Date Received</th>
+                                                <th>Condition</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody *ngIf="tte?.length != 0">
+                                                <tr *ngFor="let tte of tte">
+                                                <!-- <td><a href="#" [routerLink]=""> {{ tte.code }} </a></td> -->
+                                                <!-- <td>{{ tte.employee_id }}</td> -->
+                                                
+                                                <td>{{ tte.description }}</td>
+                                                <td>{{ tte.category }}</td>
+                                                <td>{{ tte.quantity }}</td>
+                                                <td>{{ tte.brand }}</td>
+                                                <td>{{ tte.serial_number }}</td>
+                                                <td>{{ tte.calibration_validity_date }}</td>
+                                                <td>{{ tte.date_received }}</td>
+                                                <td>{{ tte.tte_condition }}</td>
+                                                </tr>
+                                            </tbody>
+                                            <tbody *ngIf="tte?.length == 0">
+                                                <tr>
+                                                    <td colspan="10" class="no-data-available">No data!</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        
+                                    
+                                    </div>
+                                </div>
+
+
+                                <div class="tab-pane" id="sv">
+                                
+                                    <div class="post">
+                                        <strong><i class="nav-icon fas fas fa-car"></i> Service Vehicle</strong>
+
+                                        <hr>
+                                        <table *ngIf="sv !== undefined" datatable [dtOptions]="dtOptions" class="row-border hover" id="dt0" class="table table-striped table-bordered" style="width:100%; border: none;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Fleet No</th>
+                                                    <th>Plate No</th>
+                                                    <th>Manufacturer</th>
+                                                    <th>Make</th>
+                                                    <th>Production Year</th>
+                                                    <th>Status</th>
+                                                    <!-- <th>Engine Serial No</th>
+                                                    <th>Chassis Serial No</th>
+                                                    <th>Body Serial No</th>
+                                                    <th>OR No</th>
+                                                    <th>Fleet Card No</th>
+                                                    <th>Fuel Allocation</th> -->
+                                                </tr>
+                                            </thead>
+                                            <tbody *ngIf="sv?.length != 0">
+                                                <tr *ngFor="let sv of sv">
+                                                    <td>{{ sv.fleet_no }}</td>
+                                                    <td>{{ sv.plate_no }}</td>
+                                                    <td>{{ sv.manufacturer }}</td>
+                                                    <td>{{ sv.make }}</td>
+                                                    <td>{{ sv.production_year }}</td>
+                                                    <td>{{ sv.sv_status }}</td>
+                                                    <!-- <td>{{ sv.engine_serial_no }}</td>
+                                                    <td>{{ sv.chassis_serial_no }}</td>
+                                                    <td>{{ sv.body_serial_no }}</td> -->
+                                                    <!-- <td>{{ sv.or_no }}</td> -->
+                                                    <!-- <td>{{ sv.fleet_card_no }}</td> -->
+                                                    <!-- <td>{{ sv.fuel_allocation }}</td> -->
+                                                </tr>
+                                            </tbody>
+                                            <tbody *ngIf="sv?.length == 0">
+                                                <tr>
+                                                    <td colspan="6" class="no-data-available">No data!</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                  
+                                    
+                                    </div>
                                 </div>
                                 
-                                
-                                <div>
-                                <i class="fas fa-envelope bg-primary"></i>
-                                <div class="timeline-item">
-                                <span class="time"><i class="far fa-clock"></i> 12:05</span>
-                                <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
-                                <div class="timeline-body">
-                                Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
-                                weebly ning heekya handango imeem plugg dopplr jibjab, movity
-                                jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
-                                quora plaxo ideeli hulu weebly balihoo...
-                                </div>
-                                <div class="timeline-footer">
-                                <a href="#" class="btn btn-primary btn-sm">Read more</a>
-                                <a href="#" class="btn btn-danger btn-sm">Delete</a>
-                                </div>
-                                </div>
-                                </div>
-                                
-                                
-                                <div>
-                                <i class="fas fa-user bg-info"></i>
-                                <div class="timeline-item">
-                                <span class="time"><i class="far fa-clock"></i> 5 mins ago</span>
-                                <h3 class="timeline-header border-0"><a href="#">Sarah Young</a> accepted your friend request
-                                </h3>
-                                </div>
-                                </div>
-                                
-                                
-                                <div>
-                                <i class="fas fa-comments bg-warning"></i>
-                                <div class="timeline-item">
-                                <span class="time"><i class="far fa-clock"></i> 27 mins ago</span>
-                                <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
-                                <div class="timeline-body">
-                                Take me to your leader!
-                                Switzerland is small and neutral!
-                                We are more like Germany, ambitious and misunderstood!
-                                </div>
-                                <div class="timeline-footer">
-                                <a href="#" class="btn btn-warning btn-flat btn-sm">View comment</a>
-                                </div>
-                                </div>
-                                </div>
-                                
-                                
-                                <div class="time-label">
-                                <span class="bg-success">
-                                3 Jan. 2014
-                                </span>
-                                </div>
-                                
-                                
-                                <div>
-                                <i class="fas fa-camera bg-purple"></i>
-                                <div class="timeline-item">
-                                <span class="time"><i class="far fa-clock"></i> 2 days ago</span>
-                                <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
-                                <div class="timeline-body">
-                                <!-- <img src="https://placehold.it/150x100" alt="...">
-                                <img src="https://placehold.it/150x100" alt="...">
-                                <img src="https://placehold.it/150x100" alt="...">
-                                <img src="https://placehold.it/150x100" alt="..."> -->
-                                </div>
-                                </div>
-                                </div>
-                                
-                                <div>
-                                <i class="far fa-clock bg-gray"></i>
-                                </div>
-                                </div>
-                                </div>
-                                
-                                <!-- <div class="tab-pane" id="settings">
-                                <form class="form-horizontal">
-                                <div class="form-group row">
-                                <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-                                <div class="col-sm-10">
-                                <input type="email" class="form-control" id="inputName" placeholder="Name">
-                                </div>
-                                </div>
-                                <div class="form-group row">
-                                <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-                                <div class="col-sm-10">
-                                <input type="email" class="form-control" id="inputEmail" placeholder="Email">
-                                </div>
-                                </div>
-                                <div class="form-group row">
-                                <label for="inputName2" class="col-sm-2 col-form-label">Name</label>
-                                <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputName2" placeholder="Name">
-                                </div>
-                                </div>
-                                <div class="form-group row">
-                                <label for="inputExperience" class="col-sm-2 col-form-label">Experience</label>
-                                <div class="col-sm-10">
-                                <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
-                                </div>
-                                </div>
-                                <div class="form-group row">
-                                <label for="inputSkills" class="col-sm-2 col-form-label">Skills</label>
-                                <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
-                                </div>
-                                </div>
-                                <div class="form-group row">
-                                <div class="offset-sm-2 col-sm-10">
-                                <div class="checkbox">
-                                <label>
-                                <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
-                                </label>
-                                </div>
-                                </div>
-                                </div>
-                                <div class="form-group row">
-                                <div class="offset-sm-2 col-sm-10">
-                                <button type="submit" class="btn btn-danger">Submit</button>
-                                </div>
-                                </div>
-                                </form>
-                                </div> -->
-                            
                             </div>
                         
                         </div>

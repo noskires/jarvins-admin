@@ -1,31 +1,36 @@
 ::ng-deep ngb-modal-backdrop {
     z-index: 1050 !important;
+}
+
+::ng-deep .dataTables_wrapper {
+    font-size: 12px;
+}
+
+ul li img {
+    /* min-width: 200px;
+    min-height: 200px;
+    max-width: 200px;
+    max-height: 200px; */
+    height: 150px;
+    width: 150px;
+} 
+
+
+  .form-control {
+      height:30px;
+      font-size: 12px;
   }
-   
-th { font-size: 12px; }
-td { font-size: 11px; }
 
-.dataTables_length {
-    font-size: 11px;
+ .form-group label {
+    font-size:12px;
 }
 
 
-.dataTables_filter {
-    font-size: 11px;
+i {
+    padding-right:2px;
+    cursor: pointer;
 }
 
-
-.dataTables_info {
-    font-size: 11px;
-}
-
-.dataTables_paginate {
-    font-size: 11px;
-}
-
-
-.dataTables_filter {
-    float: right;
-    text-align: right;
-    background-color: blue;
+i:hover{
+    color: blue;
 }

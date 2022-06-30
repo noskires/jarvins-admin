@@ -1,0 +1,41 @@
+.form-control {
+    height:30px;
+    font-size: 12px;
+}
+
+.form-group label {
+  font-size:12px;
+}
+
+::ng-deep ngb-modal-backdrop {
+    z-index: 1050 !important;
+}
+
+::ng-deep .dataTables_wrapper {
+    font-size: 12px;
+}
+
+::ng-deep .select2-results__options {
+    font-size: 12px;
+}
+
+::ng-deep .select2-selection__rendered {
+    font-size: 12px;
+}
+
+::ng-deep .select2-selection__choice {
+    font-size: 12px;
+    color: #000000 !Important
+}
+
+.dt-body-center {text-align: center;}
+
+i {
+    padding-right:2px;
+    cursor: pointer;
+}
+
+i:hover{
+    color: blue;
+}
+

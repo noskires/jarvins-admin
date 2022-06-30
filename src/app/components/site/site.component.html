@@ -1,0 +1,446 @@
+<div class="wrapper">
+
+    <!-- <div class="preloader flex-column justify-content-center align-items-center">
+    <img class="animation__wobble" src="assets/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+    </div> -->
+    
+    <app-nav></app-nav>
+    
+    
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    
+    <a href="index3.html" class="brand-link">
+    <img src="assets/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+    <span class="brand-text font-weight-light">JARVINS</span>
+    </a>
+    
+    <app-sidebar></app-sidebar>
+    
+    </aside>
+    
+    <div class="content-wrapper">
+    
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Sites <i class="fas fa-pencil"></i></h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Sites</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                  
+                        <div class="card-body">
+                            <div class="tab-content"> 
+                                <button type="button" class="btn btn-sm btn-primary" (click)="add(addSiteModal)"><i class="fa fa-plus-square" aria-hidden="true"></i> ADD NEW</button>
+                                <br>
+                                <br>
+                                <div class="active tab-pane" id="activity">
+                                    
+                                    <div class="post">
+                                        <table *ngIf="site !== undefined" datatable [dtOptions]="dtOptions" class="row-border hover" id="dt0" class="table table-striped table-bordered" style="width:100%;">
+                                            <thead>
+                                                <tr>
+                                                <th>Code</th>
+                                                <th>Name</th>
+                                                <th>Status</th>
+                                                <th>Category</th>
+                                                <th>Cabinet Type</th>
+                                                <th>Address</th>
+                                                <!-- <th>Region</th>
+                                                <th>Province</th>
+                                                <th>City/Municipality</th>
+                                                <th>Barangay</th>
+                                                <th>Street</th> -->
+                                                <th>Building</th>
+                                                <th>Exchange</th>
+                                                <th>Electric Company</th>
+                                                <th>Electric SIN</th>
+                                                <th>Electric Meter</th>
+                                                <th>PSS Owner</th>
+                                                <th class="text-center">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody *ngIf="site?.length != 0">
+                                                <tr *ngFor="let site of site">
+                                                <td>{{ site.code }}</td>
+                                                <td>{{ site.name }}</td>
+                                                <td>{{ site.status }}</td>
+                                                <td>{{ site.category_name }}</td>
+                                                <td>{{ site.cabinet_type }}</td>
+                                                <td>{{ site.address }}</td>
+                                                <!-- <td>{{ site.region }}</td>
+                                                <td>{{ site.province }}</td>
+                                                <td>{{ site.city_municipality }}</td>
+                                                <td>{{ site.barangay }}</td>
+                                                <td>{{ site.street }}</td> -->
+                                                <td>{{ site.building_name }}</td>
+                                                <td>{{ site.exchange_name }}</td>
+                                                <td>{{ site.electric_company_name }}</td>
+                                                <td>{{ site.electric_company_sin }}</td>
+                                                <td>{{ site.electric_company_meter }}</td>
+                                                <td>{{ site.pss_owner_name }}</td>
+                                                <td class="text-center">
+                                                    <a href="" [routerLink]="" (click)="edit(editSiteModal, site)">&nbsp; <i class="fas fa-pencil-alt"> </i> </a> 
+                                                    <a  [routerLink]="" (click)="remove(site)"> <i class="fas fa-trash-alt"> </i> </a> 
+                                                    <!-- <a  [routerLink]="" (click)="view(viewTrainingModal, training)"> <i class="fas fa-eye"> </i> </a>  -->
+                                                </td>
+                                                </tr>
+                                            </tbody>
+                                            <tbody *ngIf="site?.length == 0">
+                                                <tr>
+                                                    <td colspan="14" class="no-data-available">No data!</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+</div>
+
+
+<ng-template #addSiteModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="editProfileLabel">Add Site</h5>
+        <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+        
+    <div class="modal-body">
+        <form [formGroup]="siteForm" (ngSubmit)="onSubmitSave()">
+
+            <div class="row">
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Site Code</label><br>
+                        <input type="text" class="form-control" formControlName="code" id="code" required="true">
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Site Name</label>
+                        <input type="text" class="form-control" formControlName="name" id="name" required="true">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Status</label>
+                        <ng-select2 style="width: 100%" formControlName="status" [data]="status" [options]="optionsStatus" >
+                        </ng-select2>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <ng-select2 style="width: 100%" formControlName="category_code" [options]="optionsSiteCategory" (ngModelChange)="onChange($event)" >
+                        </ng-select2>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Cabinet Type</label>
+                        <input type="text" class="form-control" formControlName="cabinet_type" id="cabinet_type" required="true">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Region</label>
+                        <select class="form-control" formControlName="region" (ngModelChange)="onChangeRegion($event)" placeholder="Select Region">
+                            <option [value]=null>Select Region</option>
+                            <option *ngFor="let region of dataRegions" [value]="region.id">{{region.text}}</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Province</label>
+                        <select class="form-control" formControlName="province" (ngModelChange)="onChangeProvince($event)" placeholder="Select Province">
+                            <option [value]=null>Select Province</option>
+                            <option *ngFor="let province of dataProvinces" [value]="province.id">{{province.text}}</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>City/Municipality</label>
+                        <select class="form-control" formControlName="city_municipality" (ngModelChange)="onChangeCityMunicipality($event)" placeholder="Select Town">
+                            <option [value]=null>Select Town</option>
+                            <option *ngFor="let town of dataTowns" [value]="town.id">{{town.text}}</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Brgy</label>
+                        <select class="form-control" formControlName="brgy" placeholder="Select Town">
+                            <option [value]=null>Select Brgy</option>
+                            <option *ngFor="let barangay of dataBarangays" [value]="barangay.id">{{barangay.text}}</option>
+                        </select>
+                    </div>
+                </div> 
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Street</label>
+                        <input type="text" class="form-control" formControlName="street" id="street" required="true">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Lot No.</label>
+                        <input type="text" class="form-control" formControlName="street" id="lot_no" required="true">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Longitude</label>
+                        <input type="text" class="form-control" formControlName="longitude" id="longitude" required="true">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Latitude</label>
+                        <input type="text" class="form-control" formControlName="latitude" id="latitude" required="true">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Building</label>
+                        <ng-select2 style="width: 100%" formControlName="building_code" [options]="optionsBuilding">
+                        </ng-select2>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Exchange</label>
+                        <ng-select2 style="width: 100%" formControlName="exchange_code" [options]="optionsExchange">
+                        </ng-select2>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Electric Company</label>
+                        <ng-select2 style="width: 100%" formControlName="electric_company_code" [options]="optionsElectricCompany">
+                        </ng-select2>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>PSS Owner</label>
+                        <ng-select2 style="width: 100%" formControlName="pss_owner_code" [options]="optionsPssOwner">
+                        </ng-select2>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm  btn-secondary" (click)="modal.dismiss()">Close</button>
+                <button type="submit" class="btn btn-sm  btn-primary">Save</button>
+            </div>
+        </form>
+
+    </div>
+</ng-template>
+
+<ng-template #editSiteModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="editProfileLabel">Edit Site Details</h5>
+        <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+        
+    <div class="modal-body">
+        <form [formGroup]="siteForm" (ngSubmit)="onSubmitUpdate()">
+
+            <div class="row">
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Site Code</label><br>
+                        <input type="text" class="form-control" formControlName="code" id="code" required="true">
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Site Name</label>
+                        <input type="text" class="form-control" formControlName="name" id="name" required="true">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Status</label>
+                        <ng-select2 style="width: 100%" formControlName="status" [data]="status" [options]="optionsStatus" >
+                        </ng-select2>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <ng-select2 style="width: 100%" formControlName="category_code" [data]="defaultValueSiteCategory" [options]="optionsSiteCategory" >
+                        </ng-select2>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Cabinet Type</label>
+                        <input type="text" class="form-control" formControlName="cabinet_type" id="cabinet_type" required="true">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Region</label>
+                        <select class="form-control" formControlName="region" (ngModelChange)="onChangeRegion($event)" placeholder="Select Region">
+                            <option [value]=null>Select Region</option>
+                            <option *ngFor="let region of dataRegions" [value]="region.id">{{region.text}}</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Province</label>
+                        <select class="form-control" formControlName="province" (ngModelChange)="onChangeProvince($event)" placeholder="Select Province">
+                            <option [value]=null>Select Province</option>
+                            <option *ngFor="let province of dataProvinces" [value]="province.id">{{province.text}}</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>City/Municipality</label>
+                        <select class="form-control" formControlName="city_municipality" (ngModelChange)="onChangeCityMunicipality($event)" placeholder="Select Town">
+                            <option [value]=null>Select Town</option>
+                            <option *ngFor="let town of dataTowns" [value]="town.id">{{town.text}}</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Brgy</label>
+                        <select class="form-control" formControlName="brgy" placeholder="Select Town">
+                            <option [value]=null>Select Brgy</option>
+                            <option *ngFor="let barangay of dataBarangays" [value]="barangay.id">{{barangay.text}}</option>
+                        </select>
+                    </div>
+                </div> 
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Street</label>
+                        <input type="text" class="form-control" formControlName="street" id="street" required="true">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Lot No.</label>
+                        <input type="text" class="form-control" formControlName="lot_no" id="lot_no" required="true">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Longitude</label>
+                        <input type="text" class="form-control" formControlName="longitude" id="longitude" required="true">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Latitude</label>
+                        <input type="text" class="form-control" formControlName="latitude" id="latitude" required="true">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Building</label>
+                        <ng-select2 style="width: 100%" formControlName="building_code" [data]="defaultValueBuilding" [options]="optionsBuilding">
+                        </ng-select2>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Exchange</label>
+                        <ng-select2 style="width: 100%" formControlName="exchange_code" [data]="defaultValueExchange" [options]="optionsExchange">
+                        </ng-select2>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Electric Company</label>
+                        <ng-select2 style="width: 100%" formControlName="electric_company_code" [data]="defaultValueElectricCompany" [options]="optionsElectricCompany">
+                        </ng-select2>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>PSS Owner</label>
+                        <ng-select2 style="width: 100%" formControlName="pss_owner_code" [data]="defaultValuePssOwner"  [options]="optionsPssOwner">
+                        </ng-select2>
+                    </div>
+                </div>
+                
+            </div>
+
+        
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm  btn-secondary" (click)="modal.dismiss()">Close</button>
+                <button type="submit" class="btn btn-sm  btn-primary">Save</button>
+            </div>
+        </form>
+
+    </div>
+</ng-template>
+
+

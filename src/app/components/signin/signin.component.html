@@ -1,47 +1,69 @@
-<div class="hold-transition login-page">
-    <div class="login-box">
-        <div class="login-logo">
-        <a href="../../index2.html"><b>J.A.R.V.I.N.S.</b></a>
+
+<div class="limiter">
+    <div class="container-login100">
+
+      <div class="wrap-login100">
+        <div id="floating" class="login100-pic">
+          <br><br>
+          <img src="assets/img/img-01.png" alt="IMG">
+          <div class="shadow"></div>
         </div>
         
-        <div class="card">
-            <div class="card-body login-card-body">
-            <p class="login-box-msg">Sign in</p>
-                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-                    <!-- Errors -->
-                    <div *ngIf="errors?.email" class="alert alert-danger mt-3">
-                        {{ errors?.email }}
-                    </div>
-                    <div *ngIf="errors?.password" class="alert alert-danger mt-3">
-                        {{ errors?.password }}
-                    </div>
-                    <div *ngIf="errors?.error" class="alert alert-danger mt-3">
-                        {{ errors?.error }}
-                    </div>
+        <form class="login100-form validate-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <!-- Errors -->
 
-                    <div class="input-group mb-3">
-                        <input type="email" class="form-control" placeholder="Email" formControlName="email" value="ebsupnet@gmail.com">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-envelope"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-group mb-3">
-                        <input type="password" class="form-control" placeholder="Password" formControlName="password" value="password">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-                        </div>    
-                    </div>
-                </form>
-            </div>
+        <span class="login100-form-title">
+            <hr>
+            <br>
+            <h4>JARVINS</h4>
+            <br>
+            <hr>
+        </span>
+        <br> 
+        <div *ngIf="errors?.email" class="alert alert-danger mt-3">
+            {{ errors?.email }}
         </div>
+        <div *ngIf="errors?.password" class="alert alert-danger mt-3">
+            {{ errors?.password }}
+        </div>
+        <div *ngIf="errors?.error" class="alert alert-danger mt-3">
+            {{ errors?.error }}
+        </div>
+         
+        <br>
+          <div class="wrap-input100 validate-input" data-validate = "Valid email is required">
+            <input type="email" class="input100" placeholder="Email" formControlName="email" value="ebsupnet@gmail.com">
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+              <i class="fa fa-envelope" aria-hidden="true"></i>
+            </span>
+          </div>
+
+          <div class="wrap-input100 validate-input" data-validate = "Password is required">
+            <input type="password" class="input100" placeholder="Password" formControlName="password" value="password">
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+              <i class="fa fa-lock" aria-hidden="true"></i>
+            </span>
+          </div>
+          
+          <div class="container-login100-form-btn">
+            <button class="login100-form-btn">
+              Login
+            </button>
+          </div>
+
+          <!-- <div class="text-center p-t-12">
+            <span class="txt1">
+              Forgot
+            </span>
+            <a class="txt2" href="#">
+              Username / Password?
+            </a>
+          </div> -->
+
+        </form>
+      </div>
     </div>
-</div>
+  </div>
+<!-- /.login-box -->
