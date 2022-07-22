@@ -11,18 +11,18 @@ export class ExchangeService {
   constructor(private http: HttpClient) {}
 
   list(params: any): Observable<any> {
-    return this.http.post(environment.API_URL+'backend/api/v1/exchange/list', params);
+    return this.http.post(environment.API_URL+'api/v1/exchange/list', params);
   }
 
   save(params: any): Observable<any> {
-    return this.http.post(environment.API_URL+'backend/api/v1/exchange/save', params);
+    return this.http.post(environment.API_URL+'api/v1/exchange/save', params);
   }
 
   update(params: any): Observable<any> {
-    return this.http.post(environment.API_URL+'backend/api/v1/exchange/update', params);
+    return this.http.post(environment.API_URL+'api/v1/exchange/update', params);
   }
 
   delete(params: any): Observable<any> {
-    return this.http.post(environment.API_URL+'backend/api/v1/exchange/delete', params);
+    return this.http.post(environment.API_URL+'api/v1/exchange/delete', params);
   }
 }
