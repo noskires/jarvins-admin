@@ -57,30 +57,30 @@
 
 @font-face {
   font-family: Poppins-Regular;
-  src: url('node_modules/@fortawesome/fontawesome-free/webfonts/poppins/Poppins-Regular.ttf'); 
+  /* src: url('node_modules/@fortawesome/fontawesome-free/webfonts/poppins/Poppins-Regular.ttf');  */
 }
 
 @font-face {
   font-family: Poppins-Bold;
-  src: url('node_modules/@fortawesome/fontawesome-free/webfonts/poppins/Poppins-Bold.ttf'); 
+  /* src: url('node_modules/@fortawesome/fontawesome-free/webfonts/poppins/Poppins-Bold.ttf');  */
   /* src: url('../../dist/fonts/poppins/Poppins-Bold.ttf');  */
 }
 
 @font-face {
   font-family: Poppins-Medium;
-  src: url('node_modules/@fortawesome/fontawesome-free/webfonts/poppins/Poppins-Medium.ttf'); 
+  /* src: url('node_modules/@fortawesome/fontawesome-free/webfonts/poppins/Poppins-Medium.ttf');  */
   /* src: url('../../dist/fonts/poppins/Poppins-Medium.ttf');  */
 }
 
 @font-face {
   font-family: Montserrat-Bold;
-  src: url('node_modules/@fortawesome/fontawesome-free/webfonts/montserrat/Montserrat-Bold.ttf'); 
+  /* src: url('node_modules/@fortawesome/fontawesome-free/webfonts/montserrat/Montserrat-Bold.ttf');  */
   /* src: url('../../dist/fonts/montserrat/Montserrat-Bold.ttf');  */
 }
 
 @font-face {
   font-family: FontAwesome;
-  src: url('node_modules/@fortawesome/fontawesome-free/webfonts/montserrat/Montserrat-Bold.ttf'); 
+  /* src: url('node_modules/@fortawesome/fontawesome-free/webfonts/montserrat/Montserrat-Bold.ttf');  */
   /* src: url('../../dist/fonts/montserrat/Montserrat-Bold.ttf');  */
 }
 
