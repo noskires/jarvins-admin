@@ -132,7 +132,7 @@ export class EmployeesComponent implements OnInit {
 
     // process.env.SECRET_KEY;
 
-    alert(environment.API_KEY);
+    // alert(environment.API_KEY);
 // console.log(process.env)
  
 
