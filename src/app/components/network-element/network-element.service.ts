@@ -11,23 +11,23 @@ export class NetworkElementService {
   constructor(private http: HttpClient) {}
 
   list(params: any): Observable<any> {
-    return this.http.post(environment.API_URL+'backend/api/v1/ne/list', params);
+    return this.http.post(environment.API_URL+'api/v1/ne/list', params);
   }
 
   save(params: any): Observable<any> {
-    return this.http.post(environment.API_URL+'backend/api/v1/ne/save', params);
+    return this.http.post(environment.API_URL+'api/v1/ne/save', params);
   }
 
   update(params: any): Observable<any> {
-    return this.http.post(environment.API_URL+'backend/api/v1/ne/update', params);
+    return this.http.post(environment.API_URL+'api/v1/ne/update', params);
   }
 
   delete(params: any): Observable<any> {
-    return this.http.post(environment.API_URL+'backend/api/v1/ne/delete', params);
+    return this.http.post(environment.API_URL+'api/v1/ne/delete', params);
   }
 
   select2(params: any): Observable<any> {
-    return this.http.post(environment.API_URL+'backend/api/v1/ne/select2', params);
+    return this.http.post(environment.API_URL+'api/v1/ne/select2', params);
   }
 
  
