@@ -10,9 +10,6 @@ import { TokenService } from "../../shared/token.service";
 import { Select2OptionData } from 'ng-select2';
 import Swal from 'sweetalert2'
 
-
-declare let $: any;
-
 @Component({
   selector: 'app-exchange',
   templateUrl: './exchange.component.html',

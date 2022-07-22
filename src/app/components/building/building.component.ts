@@ -10,17 +10,12 @@ import { TokenService } from "../../shared/token.service";
 import { Select2OptionData } from 'ng-select2';
 import Swal from 'sweetalert2'
 
-
-declare let $: any;
-
 @Component({
   selector: 'app-building',
   templateUrl: './building.component.html',
   styleUrls: ['./building.component.css']
 })
 export class BuildingComponent implements OnInit {
-
-  public defaultValue!: Array<Select2OptionData>;
 
   @ViewChild(DataTableDirective, {static: false})
 
@@ -31,11 +26,7 @@ export class BuildingComponent implements OnInit {
   status: any[]= [];
   
   buildingForm!: FormGroup;
-  
-  siteCategoryDefaultValue!: any;
 
-  params!: any;
-  select2Params!: any;
 
   constructor(
     private http: HttpClient,
