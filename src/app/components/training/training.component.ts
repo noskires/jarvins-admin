@@ -100,7 +100,7 @@ export class TrainingComponent implements OnInit {
 
       },
       columns: [
-        { data: 'code', width: "30%"  }, 
+        // { data: 'code', width: "30%"  }, 
         { data: 'title' },
         { data: null, defaultContent:'asdf', title: "Actions", width: "10%", className: "dt-body-center", orderable: false},
       ]
@@ -111,7 +111,7 @@ export class TrainingComponent implements OnInit {
       code: ['', Validators.required],
       title: ['', Validators.required],
     });
-
+    
   }
 
   add(targetModal:any) {
@@ -178,8 +178,8 @@ export class TrainingComponent implements OnInit {
         dataTablesParameters['training_code'] = raw.code;
         console.log(dataTablesParameters)
         this.trainingHistory = [];
-        this.trainingHistoryService.list(dataTablesParameters).subscribe(resp => {
-          this.trainingHistory = resp.data;
+        this.trainingHistoryService.list(dataTablesParameters).subscribe(async resp => {
+          this.trainingHistory = await resp.data;
           console.log(resp)
 
           callback({
@@ -273,9 +273,6 @@ export class TrainingComponent implements OnInit {
     ];
 
     this.value1 = raw.employee_id;
-   
-
-
     
 // select2
     this.options = {
@@ -320,8 +317,6 @@ export class TrainingComponent implements OnInit {
       
     };
 
-  
-      
     this.trainingHistoryForm.patchValue({
       id: raw.id,
       code: raw.code,

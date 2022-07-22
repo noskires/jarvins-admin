@@ -7,11 +7,14 @@ import { ElectricCompanyComponent } from './components/electric-company/electric
 import { EmployeesComponent } from './components/employees/employees.component';
 import { ExchangeComponent } from './components/exchange/exchange.component';
 import { HomeComponent } from './components/home/home.component';
+import { NetworkElementComponent } from './components/network-element/network-element.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { PssOwnerComponent } from './components/pss-owner/pss-owner.component';
 import { SigninComponent } from './components/signin/signin.component';
 import { SiteCategoryComponent } from './components/site-category/site-category.component';
 import { SiteComponent } from './components/site/site.component';
+import { BatteryComponent } from './components/support-facilities/battery/battery.component';
+import { RectifierComponent } from './components/support-facilities/rectifier/rectifier.component';
 import { SvComponent } from './components/sv/sv.component';
 import { TrainingComponent } from './components/training/training.component';
 import { TteComponent } from './components/tte/tte.component';
@@ -33,6 +36,9 @@ const routes: Routes = [
   { path: 'electric-company', component: ElectricCompanyComponent },
   { path: 'site-category', component: SiteCategoryComponent },
   { path: 'pss-owner', component: PssOwnerComponent },
+  { path: 'network-element', component: NetworkElementComponent },
+  { path: 'support-facility/battery', component: BatteryComponent },
+  { path: 'support-facility/rectifier', component: RectifierComponent },
   
   
 //   testing

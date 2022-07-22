@@ -14,41 +14,45 @@ export class User {
   providedIn: 'root',
 })
 
+// const url = "http://localhost/laravel-jwt-auth/backend/";
+// const url = "https://jarvins.herokuapp.com/";
+
 export class AuthService {
   constructor(private http: HttpClient) {}
   // User registration
+   
   register(user: User): Observable<any> {
-    return this.http.post('http://localhost/laravel-jwt-auth/backend/api/auth/register', user);
+    return this.http.post('https://jarvins.herokuapp.com/api/auth/register', user);
   }
   // Login
   signin(user: User): Observable<any> {
-    return this.http.post<any>('http://localhost/laravel-jwt-auth/backend/api/auth/login', user);
+    return this.http.post<any>('https://jarvins.herokuapp.com/api/auth/login', user);
   }
 
   //get me
   me(): Observable<any> {
-    return this.http.get('http://localhost/laravel-jwt-auth/backend/api/auth/me');
+    return this.http.get('https://jarvins.herokuapp.com/api/auth/me');
   }
 
   // Access user profile
   profileUser(): Observable<any> {
-    return this.http.get('http://localhost/laravel-jwt-auth/backend/api/auth/user-profile');
+    return this.http.get('https://jarvins.herokuapp.com/api/auth/user-profile');
   }
 
   // Update User
   update(user: User): Observable<any> {
-    return this.http.post('http://localhost/laravel-jwt-auth/backend/api/auth/update', user);
+    return this.http.post('https://jarvins.herokuapp.com/api/auth/update', user);
   }
 
   users(user: any): Observable<any> {
-    return this.http.get('http://localhost/laravel-jwt-auth/backend/api/auth/users', user);
+    return this.http.get('https://jarvins.herokuapp.com/api/auth/users', user);
   }
 
   users2(params: any): Observable<any> {
-    return this.http.post('http://localhost/laravel-jwt-auth/backend/api/auth/users2', params);
+    return this.http.post('https://jarvins.herokuapp.com/api/auth/users2', params);
   }
 
   select2(): Observable<any> {
-    return this.http.get('http://localhost/laravel-jwt-auth/backend/api/auth/select2');
+    return this.http.get('https://jarvins.herokuapp.com/api/auth/select2');
   }
 }

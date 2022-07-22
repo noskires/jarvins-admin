@@ -13,7 +13,13 @@ import { TteService } from '../tte/tte.service';
 import { SvService } from '../sv/sv.service';
 import { TokenService } from 'src/app/shared/token.service'; 
 import { SiteService } from '../site/site.service';
+// import { environment } 
+import { environment } from '../../../environments/environment';
 
+// require('dotenv').config();
+
+
+// require('dotenv').config();
 
 declare var angular: any;
 export interface Options {
@@ -46,6 +52,8 @@ export interface OptionsFloor {
   styleUrls: ['./employees.component.css']
 })
 export class EmployeesComponent implements OnInit {
+
+  
 
   @ViewChild(DataTableDirective, {static: false})
   dtElement!: DataTableDirective;
@@ -121,6 +129,11 @@ export class EmployeesComponent implements OnInit {
       var id = params.get('id');
       console.log(id);
     });
+
+    // process.env.SECRET_KEY;
+
+    alert(environment.API_KEY);
+// console.log(process.env)
  
 
     this.authService.me().subscribe(resp=> {
@@ -149,8 +162,8 @@ export class EmployeesComponent implements OnInit {
       ajax: (dataTablesParameters: any, callback) => {
        
         console.log(dataTablesParameters)
-        this.employeeService.list(dataTablesParameters).subscribe(resp => {
-            that.users = resp.data;
+        this.employeeService.list(dataTablesParameters).subscribe(async resp => {
+            that.users = await resp.data;
             console.log(resp)
 
             callback({
@@ -789,7 +802,6 @@ export class EmployeesComponent implements OnInit {
         dataTablesParameters['employee_id'] = user.employee_id;
         console.log(dataTablesParameters)
 
-      
         this.trainingHistoryService.list(dataTablesParameters).subscribe(resp => {
           this.trainingHistory = resp.data;
           console.log(resp)

@@ -39,12 +39,3 @@ i:hover{
     color: blue;
 }
 
-
-::ng-deep .odd{
-    display: none
-}
-
-.dataTables_empty {
-    display: none;
-    }
-

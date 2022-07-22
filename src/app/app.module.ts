@@ -32,7 +32,9 @@ import { ExchangeComponent } from './components/exchange/exchange.component';
 import { PssOwnerComponent } from './components/pss-owner/pss-owner.component';
 import { Select2AuroraModule } from 'select2-aurora';
 import { NetworkElementComponent } from './components/network-element/network-element.component';
- 
+import { BatteryComponent } from './components/support-facilities/battery/battery.component';
+import { RectifierComponent } from './components/support-facilities/rectifier/rectifier.component';
+
 
 
 
@@ -57,7 +59,9 @@ import { NetworkElementComponent } from './components/network-element/network-el
     ElectricCompanyComponent,
     ExchangeComponent,
     PssOwnerComponent,
-    NetworkElementComponent
+    NetworkElementComponent,
+    BatteryComponent,
+    RectifierComponent
   ],
   imports: [
     BrowserModule,

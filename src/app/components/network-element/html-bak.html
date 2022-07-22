@@ -217,7 +217,7 @@
 
 <ng-template #editNeModal let-modal>
     <div class="modal-header">
-        <h5 class="modal-title" id="editProfileLabel">Edit NE Details</h5>
+        <h5 class="modal-title" id="editProfileLabel">Edit Site Details</h5>
         <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -373,25 +373,22 @@
                     
                     </div>
                     
-                    <div class="card card-primary">
+                    <!-- <div class="card card-primary">
                         <div class="card-header">
                             <h3 class="card-title">Basic Info</h3>
                         </div>
                         
                         <div class="card-body">
-                            <strong>Name</strong>: {{neRaw.name}} 
+                            <strong>Name</strong> name
                             <br>
-                            <strong>Status</strong>: {{neRaw.status}} 
+                            <strong>Type</strong>North Luzon Fixed Field Operations Support
                             <br>
-                            <strong>Type</strong>: {{neRaw.type}} 
-                            <br>
-                            <strong>Vendor</strong>: {{neRaw.vendor}} 
-                            <br>
+                            <strong>Status</strong>Status
         
       
                         </div>
                         
-                    </div>
+                    </div> -->
                 
                 </div>
                 
@@ -413,70 +410,64 @@
                                         <strong><i class="nav-icon fas fa-pallet"></i> Rectifier </strong>
                                         <hr>
 
-                                        <table *ngIf="rectifier !== undefined" datatable [dtOptions]="dtOptionsRectifier" class="row-border hover" class="table table-striped table-bordered" style="width:100%;">
+                                        <!-- <table *ngIf="rectifier !== undefined" datatable [dtOptions]="dtOptionsRectifier" class="row-border hover" class="table table-striped table-bordered" style="width:100%;">
                                             <thead>
                                                 <tr>
                                                     <th>Manufacturer</th>
-                                                    <th>Index No</th>
+                                                    <th>Index</th>
                                                     <th>Model</th>
                                                     <th>Maintainer</th>
                                                     <th>Status</th>
                                                     <th>Date Installed</th>
                                                     <th>Date Accepted</th>
+
+                                                    <th>ID</th>
+                                                    <th>Code</th>
+                                                    <th>Rectifier Code</th>
+
+
                                                 </tr>
                                             </thead>
                                             <tbody *ngIf="rectifier?.length != 0">
                                                 <tr *ngFor="let rectifier of rectifier">
-                                                    <td>{{ rectifier.rectifier_manufacturer }}</td>
-                                                    <td>{{ rectifier.rectifier_index_no }}</td>
-                                                    <td>{{ rectifier.rectifier_model }}</td>
-                                                    <td>{{ rectifier.rectifier_maintainer }}</td>
-                                                    <td>{{ rectifier.rectifier_status }}</td>
-                                                    <td>{{ rectifier.rectifier_date_installed }}</td>
-                                                    <td>{{ rectifier.rectifier_date_accepted }}</td>
+                                                <td>{{ rectifier.rectifier_manufacturer }}</td>
+                                                <td>{{ rectifier.rectifier_index_no }}</td>
+                                                <td>{{ rectifier.rectifier_model }}</td>
+                                                <td>{{ rectifier.rectifier_maintainer }}</td>
+                                                <td>{{ rectifier.rectifier_status }}</td>
+                                                <td>{{ rectifier.rectifier_date_installed }}</td>
+                                                <td>{{ rectifier.rectifier_date_accepted }}</td>
+
+                                                <td>{{ rectifier.id }}</td>
+                                                <td>{{ rectifier.code }}</td>
+                                                <td>{{ rectifier.rectifier_code }}</td>
                                                 </tr>
                                             </tbody>
                                             <tbody *ngIf="rectifier?.length == 0">
                                                 <tr>
-                                                    <td colspan="7" class="no-data-available text-center">No data available in table</td>
+                                                    <td colspan="3" class="no-data-available text-center">No data available in table</td>
                                                 </tr>
                                             </tbody>
-                                        </table>
-                                    </div>
+                                        </table> -->
 
-
-                                    <div class="post">
-                                        <strong><i class="nav-icon fas fa-battery-full"></i> Battery </strong>
-                                        <hr>
-
-                                        <table *ngIf="battery !== undefined" datatable [dtOptions]="dtOptionsBattery" class="row-border hover" class="table table-striped table-bordered" style="width:100%;">
+                                        <table *ngIf="rectifier !== undefined" datatable [dtOptions]="dtOptionsRectifier" class="row-border hover" class="table table-striped table-bordered" style="width:100%;">
                                             <thead>
                                                 <tr>
-                                                    <th>Rectifier</th>
-                                                    <th>Manufacturer</th>
-                                                    <th>Index No</th>
-                                                    <th>Model</th>
-                                                    <th>Maintainer</th>
-                                                    <th>Status</th>
-                                                    <th>Date Installed</th>
-                                                    <th>Date Accepted</th>
+                                                    <th>ID</th>
+                                                    <th>Code</th>
+                                                    <!-- <th>Rectifier Code</th> -->
                                                 </tr>
                                             </thead>
-                                            <tbody *ngIf="battery?.length != 0">
-                                                <tr *ngFor="let battery of battery">
-                                                    <td>{{ battery.rectifier_manufacturer }}</td>
-                                                    <td>{{ battery.battery_manufacturer }}</td>
-                                                    <td>{{ battery.battery_index_no }}</td>
-                                                    <td>{{ battery.battery_model }}</td>
-                                                    <td>{{ battery.battery_maintainer }}</td>
-                                                    <td>{{ battery.battery_status }}</td>
-                                                    <td>{{ battery.battery_date_installed }}</td>
-                                                    <td>{{ battery.battery_date_accepted }}</td>
+                                            <tbody *ngIf="rectifier?.length != 0">
+                                                <tr *ngFor="let rectifier of rectifier">
+                                                    <td>{{ rectifier.id }}</td>
+                                                    <td>{{ rectifier.code }}</td>
+                                                    <!-- <td>{{ rectifier.rectifier_code }}</td> -->
                                                 </tr>
                                             </tbody>
-                                            <tbody *ngIf="battery?.length == 0">
+                                            <tbody *ngIf="rectifier?.length == 0">
                                                 <tr>
-                                                    <td colspan="7" class="no-data-available text-center">No data available in table</td>
+                                                    <td colspan="2" class="no-data-available text-center">No data available in table</td>
                                                 </tr>
                                             </tbody>
                                         </table>
