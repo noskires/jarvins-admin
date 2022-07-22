@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   API_KEY: '12345',
+  API_URL: 'https://jarvins.herokuapp.com/'
 };
 
 /*
