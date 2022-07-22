@@ -431,7 +431,7 @@ export class EmployeesComponent implements OnInit {
           "Authorization" : "Bearer "+this.tokenService.getToken(),
           "Content-Type" : "application/json",
         },
-        url: "http://localhost/laravel-jwt-auth/backend/api/v1/employee/select2",
+        url: environment.API_URL+"api/v1/employee/select2",
         data: function (params:any) {
 
    
@@ -458,7 +458,7 @@ export class EmployeesComponent implements OnInit {
       },
     };
 
-    this.optionsBuilding = this.siteService.select2data("bootstrap", false, true, "100%", "http://localhost/laravel-jwt-auth/backend/api/v1/building/select2", this.tokenService.getToken(), "", "Search Building");
+    this.optionsBuilding = this.siteService.select2data("bootstrap", false, true, "100%", environment.API_URL+"api/v1/building/select2", this.tokenService.getToken(), "", "Search Building");
 
     this.floors = [
       { id: '1st', text: '1st' },
@@ -583,10 +583,10 @@ export class EmployeesComponent implements OnInit {
       ];
     }
 
-    // this.optionsRegions = this.employeeService.select2data("bootstrap", false, true, "100%", "http://localhost/laravel-jwt-auth/backend/api/v1/geo/regions/select2", this.tokenService.getToken(), "", "Search Region");
-    // // this.optionsProvinces = this.employeeService.select2data("bootstrap", false, true, "100%", "http://localhost/laravel-jwt-auth/backend/api/v1/geo/nothing", this.tokenService.getToken(), "", "Search Province");
-    // // this.optionsTowns = this.employeeService.select2data("bootstrap", false, true, "100%", "http://localhost/laravel-jwt-auth/backend/api/v1/geo/nothing", this.tokenService.getToken(), "", "Search Town");
-    // // this.optionsBarangays = this.employeeService.select2data("bootstrap", false, true, "100%", "http://localhost/laravel-jwt-auth/backend/api/v1/geo/nothing", this.tokenService.getToken(), "", "Search Brgy");
+    // this.optionsRegions = this.employeeService.select2data("bootstrap", false, true, "100%", environment.API_URL+"api/v1/geo/regions/select2", this.tokenService.getToken(), "", "Search Region");
+    // // this.optionsProvinces = this.employeeService.select2data("bootstrap", false, true, "100%", environment.API_URL+"api/v1/geo/nothing", this.tokenService.getToken(), "", "Search Province");
+    // // this.optionsTowns = this.employeeService.select2data("bootstrap", false, true, "100%", environment.API_URL+"api/v1/geo/nothing", this.tokenService.getToken(), "", "Search Town");
+    // // this.optionsBarangays = this.employeeService.select2data("bootstrap", false, true, "100%", environment.API_URL+"api/v1/geo/nothing", this.tokenService.getToken(), "", "Search Brgy");
    
     this.employeeService.regions({code:null}).subscribe( async resp => {
       this.dataRegions = await resp.results;
@@ -636,7 +636,7 @@ export class EmployeesComponent implements OnInit {
           "Authorization" : "Bearer "+this.tokenService.getToken(),
           "Content-Type" : "application/json",
         },
-        url: "http://localhost/laravel-jwt-auth/backend/api/v1/employee/select2",
+        url: environment.API_URL+"api/v1/employee/select2",
         data: function (params:any) {
 
    
@@ -670,7 +670,7 @@ export class EmployeesComponent implements OnInit {
       }
     ];
     
-    this.optionsBuilding = this.siteService.select2data("bootstrap", false, true, "100%", "http://localhost/laravel-jwt-auth/backend/api/v1/building/select2", this.tokenService.getToken(), "", "Search Building");
+    this.optionsBuilding = this.siteService.select2data("bootstrap", false, true, "100%", environment.API_URL+"api/v1/building/select2", this.tokenService.getToken(), "", "Search Building");
 
     this.defaultBuilding = [
       {
@@ -906,7 +906,7 @@ export class EmployeesComponent implements OnInit {
 
   downloadFile(route: string, filename: string): void{
 
-    const baseUrl = 'http://localhost/laravel-jwt-auth/backend/api/v1/employee/export';
+    const baseUrl = environment.API_URL+'api/v1/employee/export';
     const token = "Bearer "+this.tokenService.getToken();
     const headers = new HttpHeaders().set('Authorization', token);
     this.http.get(baseUrl,{headers, responseType: 'blob' as 'json'}).subscribe(

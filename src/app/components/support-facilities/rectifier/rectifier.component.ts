@@ -11,7 +11,8 @@ import { RectifierService } from './rectifier.service';
 import { RectifierItemService } from './rectifier-item.service';
 import { Select2OptionData } from 'ng-select2';
 import { NetworkElementService } from '../../network-element/network-element.service';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import { environment } from '../../../../environments/environment';
 
 declare let $: any;
 
@@ -193,7 +194,7 @@ export class RectifierComponent implements OnInit {
           "Authorization" : "Bearer "+this.tokenService.getToken(),
           "Content-Type" : "application/json",
         },
-        url: "http://localhost/laravel-jwt-auth/backend/api/v1/ne/select2",
+        url: environment.API_URL+"api/v1/ne/select2",
         data: function (params:any) {
 
           console.log(params)
@@ -227,7 +228,7 @@ export class RectifierComponent implements OnInit {
           "Authorization" : "Bearer "+this.tokenService.getToken(),
           "Content-Type" : "application/json",
         },
-        url: "http://localhost/laravel-jwt-auth/backend/api/v1/battery/select2",
+        url: environment.API_URL+"api/v1/battery/select2",
         data: function (params:any) {
 
           console.log(params)
@@ -329,7 +330,7 @@ export class RectifierComponent implements OnInit {
           "Authorization" : "Bearer "+this.tokenService.getToken(),
           "Content-Type" : "application/json",
         },
-        url: "http://localhost/laravel-jwt-auth/backend/api/v1/ne/select2",
+        url: environment.API_URL+"api/v1/ne/select2",
         data: function (params:any) {
 
           console.log(params)
@@ -363,7 +364,7 @@ export class RectifierComponent implements OnInit {
           "Authorization" : "Bearer "+this.tokenService.getToken(),
           "Content-Type" : "application/json",
         },
-        url: "http://localhost/laravel-jwt-auth/backend/api/v1/battery/select2",
+        url: environment.API_URL+"api/v1/battery/select2",
         data: function (params:any) {
 
           console.log(params)

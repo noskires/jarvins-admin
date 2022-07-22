@@ -9,7 +9,8 @@ import { EmployeesService } from '../employees/employees.service';
 import { SiteService } from './site.service';
 import { TokenService } from "../../shared/token.service";
 import { Select2OptionData } from 'ng-select2';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import { environment } from '../../../environments/environment';
 
 declare let $: any;
 
@@ -246,11 +247,11 @@ export class SiteComponent implements OnInit {
       placeholder: 'Search Status',
     };
 
-    this.optionsSiteCategory = this.siteService.select2data("bootstrap", false, true, "100%", "http://localhost/laravel-jwt-auth/backend/api/v1/site-category/select2", this.tokenService.getToken(), "", "Search Site Category");
-    this.optionsBuilding = this.siteService.select2data("bootstrap", false, true, "100%", "http://localhost/laravel-jwt-auth/backend/api/v1/building/select2", this.tokenService.getToken(), "", "Search Building");
-    this.optionsExchange = this.siteService.select2data("bootstrap", false, true, "100%", "http://localhost/laravel-jwt-auth/backend/api/v1/exchange/select2", this.tokenService.getToken(), "", "Search Exchange");
-    this.optionsElectricCompany = this.siteService.select2data("bootstrap", false, true, "100%", "http://localhost/laravel-jwt-auth/backend/api/v1/electric-company/select2", this.tokenService.getToken(), "", "Search Electric Company");
-    this.optionsPssOwner = this.siteService.select2data("bootstrap", false, true, "100%", "http://localhost/laravel-jwt-auth/backend/api/v1/pss-owner/select2", this.tokenService.getToken(), "", "Search PSS Owner");
+    this.optionsSiteCategory = this.siteService.select2data("bootstrap", false, true, "100%", environment.API_URL+"api/v1/site-category/select2", this.tokenService.getToken(), "", "Search Site Category");
+    this.optionsBuilding = this.siteService.select2data("bootstrap", false, true, "100%", environment.API_URL+"api/v1/building/select2", this.tokenService.getToken(), "", "Search Building");
+    this.optionsExchange = this.siteService.select2data("bootstrap", false, true, "100%", environment.API_URL+"api/v1/exchange/select2", this.tokenService.getToken(), "", "Search Exchange");
+    this.optionsElectricCompany = this.siteService.select2data("bootstrap", false, true, "100%", environment.API_URL+"api/v1/electric-company/select2", this.tokenService.getToken(), "", "Search Electric Company");
+    this.optionsPssOwner = this.siteService.select2data("bootstrap", false, true, "100%", environment.API_URL+"api/v1/pss-owner/select2", this.tokenService.getToken(), "", "Search PSS Owner");
 
     this.siteForm = this.fb.group({
       id: [''],
@@ -379,11 +380,11 @@ export class SiteComponent implements OnInit {
       ];
     }
 
-    this.optionsSiteCategory = this.siteService.select2data("bootstrap", false, true, "100%", "http://localhost/laravel-jwt-auth/backend/api/v1/site-category/select2", this.tokenService.getToken(), "", "Search Site Category");
-    this.optionsBuilding = this.siteService.select2data("bootstrap", false, true, "100%", "http://localhost/laravel-jwt-auth/backend/api/v1/building/select2", this.tokenService.getToken(), "", "Search Building");
-    this.optionsExchange = this.siteService.select2data("bootstrap", false, true, "100%", "http://localhost/laravel-jwt-auth/backend/api/v1/exchange/select2", this.tokenService.getToken(), "", "Search Exchange");
-    this.optionsElectricCompany = this.siteService.select2data("bootstrap", false, true, "100%", "http://localhost/laravel-jwt-auth/backend/api/v1/electric-company/select2", this.tokenService.getToken(), "", "Search Electric Company");
-    this.optionsPssOwner = this.siteService.select2data("bootstrap", false, true, "100%", "http://localhost/laravel-jwt-auth/backend/api/v1/pss-owner/select2", this.tokenService.getToken(), "", "Search PSS Owner");
+    this.optionsSiteCategory = this.siteService.select2data("bootstrap", false, true, "100%", environment.API_URL+"api/v1/site-category/select2", this.tokenService.getToken(), "", "Search Site Category");
+    this.optionsBuilding = this.siteService.select2data("bootstrap", false, true, "100%", environment.API_URL+"api/v1/building/select2", this.tokenService.getToken(), "", "Search Building");
+    this.optionsExchange = this.siteService.select2data("bootstrap", false, true, "100%", environment.API_URL+"api/v1/exchange/select2", this.tokenService.getToken(), "", "Search Exchange");
+    this.optionsElectricCompany = this.siteService.select2data("bootstrap", false, true, "100%", environment.API_URL+"api/v1/electric-company/select2", this.tokenService.getToken(), "", "Search Electric Company");
+    this.optionsPssOwner = this.siteService.select2data("bootstrap", false, true, "100%", environment.API_URL+"api/v1/pss-owner/select2", this.tokenService.getToken(), "", "Search PSS Owner");
 
     this.siteForm.patchValue({
       id: raw.id,

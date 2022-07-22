@@ -10,7 +10,8 @@ import { TrainingService } from './training.service';
 import { TrainingHistoryService } from './training-history.service';
 import { TokenService } from "../../shared/token.service";
 import { Select2OptionData } from 'ng-select2';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import { environment } from 'src/environments/environment';
 
 declare let $: any;
 
@@ -213,7 +214,7 @@ export class TrainingComponent implements OnInit {
           "Authorization" : "Bearer "+this.tokenService.getToken(),
           "Content-Type" : "application/json",
         },
-        url: "http://localhost/laravel-jwt-auth/backend/api/v1/employee/select2",
+        url: environment.API_URL+"api/v1/employee/select2",
         data: function (params:any) {
 
           params['training_code'] = raw.code;
@@ -285,7 +286,7 @@ export class TrainingComponent implements OnInit {
             "Authorization" : "Bearer "+this.tokenService.getToken(),
             "Content-Type" : "application/json",
           },
-          url: "http://localhost/laravel-jwt-auth/backend/api/v1/employee/select2",
+          url: environment.API_URL+"api/v1/employee/select2",
           data: function (params:any) {
 
             params['training_code'] = raw.training_code;

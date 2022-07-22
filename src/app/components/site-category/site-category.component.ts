@@ -8,7 +8,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SiteCategoryService } from './site-category.service';
 import { TokenService } from "../../shared/token.service";
 import { Select2OptionData } from 'ng-select2';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-site-category',
