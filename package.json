@@ -3,16 +3,19 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node server.js",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "postinstall": "ng build --aot -prod"
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "~13.3.0",
+    "@angular/cli": "~13.3.0",
     "@angular/common": "~13.3.0",
     "@angular/compiler": "~13.3.0",
+    "@angular/compiler-cli": "~13.3.0",
     "@angular/core": "~13.3.0",
     "@angular/forms": "~13.3.0",
     "@angular/platform-browser": "~13.3.0",
@@ -26,9 +29,11 @@
     "apexcharts": "^3.35.0",
     "datatables.net": "^1.11.5",
     "datatables.net-dt": "^1.11.5",
+    "express": "^4.18.1",
     "ng-apexcharts": "^1.7.1",
     "ng-select2": "1.2.0",
     "normalize.css": "^8.0.1",
+    "path": "^0.12.7",
     "poppins-font": "^1.0.1",
     "rxjs": "~7.5.0",
     "select2": "4.0.13",
@@ -36,6 +41,7 @@
     "select2-bootstrap-theme": "0.1.0-beta.10",
     "sweetalert2": "^11.4.17",
     "tslib": "^2.3.0",
+    "typescript": "~4.6.2",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
@@ -56,9 +62,8 @@
     "karma-jasmine-html-reporter": "~1.7.0",
     "typescript": "~4.6.2"
   },
-  "browser": {
-    "fs": false,
-    "path": false,
-    "os": false
+  "engines": {
+    "node": "14.15.4",
+    "npm": "6.14.10"
   }
 }
