@@ -34,6 +34,7 @@ import { Select2AuroraModule } from 'select2-aurora';
 import { NetworkElementComponent } from './components/network-element/network-element.component';
 import { BatteryComponent } from './components/support-facilities/battery/battery.component';
 import { RectifierComponent } from './components/support-facilities/rectifier/rectifier.component';
+import { AuditsComponent } from './components/audits/audits.component';
 
 
 
@@ -61,7 +62,8 @@ import { RectifierComponent } from './components/support-facilities/rectifier/re
     PssOwnerComponent,
     NetworkElementComponent,
     BatteryComponent,
-    RectifierComponent
+    RectifierComponent,
+    AuditsComponent
   ],
   imports: [
     BrowserModule,

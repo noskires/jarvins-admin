@@ -4,8 +4,7 @@
 
 export const environment = {
   production: false,
-  API_KEY: '12345',
-  API_URL: 'https://jarvins.herokuapp.com/'
+  API_URL: 'http://localhost/laravel-jwt-auth/backend/'
 };
 
 /*

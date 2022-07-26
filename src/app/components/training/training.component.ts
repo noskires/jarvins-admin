@@ -324,8 +324,8 @@ export class TrainingComponent implements OnInit {
       training_code: raw.training_code,
       employee_id: raw.employee_id,
       certification: raw.certification,
-      start_date: raw.training_history.start_date,
-      end_date: raw.training_history.end_date,
+      start_date: raw.start_date,
+      end_date: raw.end_date,
       title_validity_date: raw.title_validity_date,
     });
 

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ApexchartsComponent } from './components/apexcharts/apexcharts.component';
+import { AuditsComponent } from './components/audits/audits.component';
 import { BuildingComponent } from './components/building/building.component';
 import { DatatablesComponent } from './components/datatables/datatables.component';
 import { ElectricCompanyComponent } from './components/electric-company/electric-company.component';
@@ -39,6 +40,7 @@ const routes: Routes = [
   { path: 'network-element', component: NetworkElementComponent },
   { path: 'support-facility/battery', component: BatteryComponent },
   { path: 'support-facility/rectifier', component: RectifierComponent },
+  { path: 'audit', component: AuditsComponent },
   
   
 //   testing
