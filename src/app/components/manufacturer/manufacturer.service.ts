@@ -6,24 +6,23 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class SvService {
-
+export class ManufacturerService {
+  
   constructor(private http: HttpClient) {}
 
   list(params: any): Observable<any> {
-    return this.http.post(environment.API_URL+'api/v1/sv/list', params);
+    return this.http.post(environment.API_URL+'api/v1/manufacturer/list', params);
   }
 
   save(params: any): Observable<any> {
-    return this.http.post(environment.API_URL+'api/v1/sv/save', params);
+    return this.http.post(environment.API_URL+'api/v1/manufacturer/save', params);
   }
 
   update(params: any): Observable<any> {
-    return this.http.post(environment.API_URL+'api/v1/sv/update', params);
+    return this.http.post(environment.API_URL+'api/v1/manufacturer/update', params);
   }
 
   delete(params: any): Observable<any> {
-    return this.http.post(environment.API_URL+'api/v1/sv/delete', params);
+    return this.http.post(environment.API_URL+'api/v1/manufacturer/delete', params);
   }
-  
 }

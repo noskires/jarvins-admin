@@ -39,19 +39,30 @@ export class RectifierComponent implements OnInit {
   dtElement!: DataTableDirective;
 
   dtOptions: DataTables.Settings = {};
+  dtOptionsRectifierItems: DataTables.Settings = {};
   rectifier: any[]= [];
   status: any[]= [];
+  rectifierItems: any[]= [];
   
   rectifierForm!: FormGroup;
+  rectifierItemForm!: FormGroup;
 
   public options!: Options;
   public optionsNe!: Options;
   public optionsBattery!: Options;
+  public optionsSite!: Options;
+  public optionsManufacturer!: Options;
+  
 
   defaultNe!: any;
   defaultNeCodes: any = [];
   defaultBattery!: any;
   defaultBatteryCodes: any = [];
+  
+
+  defaultSite: any = [];
+  defaultManufacturer: any = [];
+  editRectifierItemModal: any;
   
   params!: any;
   select2Params!: any;
@@ -95,7 +106,8 @@ export class RectifierComponent implements OnInit {
 
       },
       columns: [
-        { data: 'manufacturer' },
+        { data: 'site_name' },
+        { data: 'manufacturer_name' },
         { data: 'index_no' },
         { data: 'model' },
         { data: 'maintainer' },
@@ -108,6 +120,7 @@ export class RectifierComponent implements OnInit {
 
     this.rectifierForm = this.fb.group({
       id: ['', Validators.required],
+      site_id: ['', Validators.required],
       code: ['', Validators.required],
       network_element_code: ['', Validators.required],
       battery_code: ['', Validators.required],
@@ -152,6 +165,7 @@ export class RectifierComponent implements OnInit {
 
     this.rectifierForm = this.fb.group({
       id: [''],
+      site_id: [''],
       code: [''],
       network_element_code: [''],
       battery_code: [''],
@@ -252,6 +266,74 @@ export class RectifierComponent implements OnInit {
       },
     };
 
+    this.optionsSite = {
+      theme: "bootstrap",
+      multiple: false,
+      closeOnSelect: true,
+      width: '100%',
+      ajax: {
+        headers: {
+          "Authorization" : "Bearer "+this.tokenService.getToken(),
+          "Content-Type" : "application/json",
+        },
+        url: environment.API_URL+"api/v1/site/select2",
+        data: function (params:any) {
+
+          console.log(params)
+          var query = {
+            search: params.term,
+          }
+          // Query parameters will be ?search=[term]&type=public
+          console.log(query)
+          return query;
+        },
+        type: "get",
+        dataType: 'json',
+        delay: 100,
+        cache: true
+      },
+      placeholder: 'Search Site',
+      language: {
+          noResults: function () {
+              return "No records found!";
+          }
+      },
+    };
+
+    this.optionsManufacturer = {
+      theme: "bootstrap",
+      multiple: false,
+      closeOnSelect: true,
+      width: '100%',
+      ajax: {
+        headers: {
+          "Authorization" : "Bearer "+this.tokenService.getToken(),
+          "Content-Type" : "application/json",
+        },
+        url: environment.API_URL+"api/v1/manufacturer/select2",
+        data: function (params:any) {
+
+          console.log(params)
+          var query = {
+            search: params.term,
+          }
+          // Query parameters will be ?search=[term]&type=public
+          console.log(query)
+          return query;
+        },
+        type: "get",
+        dataType: 'json',
+        delay: 100,
+        cache: true
+      },
+      placeholder: 'Search Manufacturer',
+      language: {
+          noResults: function () {
+              return "No records found!";
+          }
+      },
+    };
+
   }
 
   edit(targetModal:any, raw:any) {
@@ -267,32 +349,35 @@ export class RectifierComponent implements OnInit {
     });
 
     
-    this.rectifierItemService.select2({item_type:'Network Element', rectifier_code:raw.code}).subscribe(async resp => {
-      this.defaultNe = await resp.results;
 
-      this.defaultNe.forEach((val: any, key:any) => { this.defaultNeCodes.push(val.id) });
+    
+    // this.rectifierItemService.select2({item_type:'Network Element', rectifier_code:raw.code}).subscribe(async resp => {
+    //   this.defaultNe = await resp.results;
 
-      console.log(this.defaultNe)
-      console.log(this.defaultNeCodes)
+    //   this.defaultNe.forEach((val: any, key:any) => { this.defaultNeCodes.push(val.id) });
 
-    });
+    //   console.log(this.defaultNe)
+    //   console.log(this.defaultNeCodes)
 
-    this.rectifierItemService.select2({item_type:"Battery", rectifier_code:raw.code}).subscribe(async resp => {
-      this.defaultBattery = await resp.results;
+    // });
 
-      this.defaultBattery.forEach((val: any, key:any) => { this.defaultBatteryCodes.push(val.id) });
+    // this.rectifierItemService.select2({item_type:"Battery", rectifier_code:raw.code}).subscribe(async resp => {
+    //   this.defaultBattery = await resp.results;
 
-      console.log(this.defaultBattery)
-      console.log(this.defaultBatteryCodes)
-    });
+    //   this.defaultBattery.forEach((val: any, key:any) => { this.defaultBatteryCodes.push(val.id) });
+
+    //   console.log(this.defaultBattery)
+    //   console.log(this.defaultBatteryCodes)
+    // });
   
     this.rectifierForm.patchValue({
 
       id: raw.id,
       code: raw.code,
+      site_id: raw.site_id,
       network_element_code:this.defaultNeCodes,
       battery_code:this.defaultBatteryCodes,
-      manufacturer: raw.manufacturer,
+      manufacturer: raw.manufacturer_id,
       serial_no: raw.serial_no,
       index_no: raw.index_no,
       model: raw.model,
@@ -320,9 +405,91 @@ export class RectifierComponent implements OnInit {
 
     });
  
-    this.optionsNe = {
+    // this.optionsNe = {
+    //   theme: "bootstrap",
+    //   multiple: true,
+    //   closeOnSelect: true,
+    //   width: '100%',
+    //   ajax: {
+    //     headers: {
+    //       "Authorization" : "Bearer "+this.tokenService.getToken(),
+    //       "Content-Type" : "application/json",
+    //     },
+    //     url: environment.API_URL+"api/v1/ne/select2",
+    //     data: function (params:any) {
+
+    //       console.log(params)
+    //       var query = {
+    //         search: params.term,
+    //       }
+    //       // Query parameters will be ?search=[term]&type=public
+    //       console.log(query)
+    //       return query;
+    //     },
+    //     type: "get",
+    //     dataType: 'json',
+    //     delay: 100,
+    //     cache: true
+    //   },
+    //   placeholder: 'Search NE',
+    //   language: {
+    //       noResults: function () {
+    //           return "No records found!";
+    //       }
+    //   },
+    // };
+
+    // this.optionsBattery = {
+    //   theme: "bootstrap",
+    //   multiple: true,
+    //   closeOnSelect: true,
+    //   width: '100%',
+    //   ajax: {
+    //     headers: {
+    //       "Authorization" : "Bearer "+this.tokenService.getToken(),
+    //       "Content-Type" : "application/json",
+    //     },
+    //     url: environment.API_URL+"api/v1/battery/select2",
+    //     data: function (params:any) {
+
+    //       console.log(params)
+    //       var query = {
+    //         search: params.term,
+    //       }
+    //       // Query parameters will be ?search=[term]&type=public
+    //       console.log(query)
+    //       return query;
+    //     },
+    //     type: "get",
+    //     dataType: 'json',
+    //     delay: 100,
+    //     cache: true
+    //   },
+    //   placeholder: 'Search Battery',
+    //   language: {
+    //       noResults: function () {
+    //           return "No records found!";
+    //       }
+    //   },
+    // };
+
+    this.defaultSite = [
+      {
+        id: raw.site_id,
+        text: raw.site_name
+      }
+    ];
+
+    this.defaultManufacturer = [
+      {
+        id: raw.manufacturer_id,
+        text: raw.manufacturer_name
+      }
+    ];
+
+    this.optionsSite = {
       theme: "bootstrap",
-      multiple: true,
+      multiple: false,
       closeOnSelect: true,
       width: '100%',
       ajax: {
@@ -330,7 +497,7 @@ export class RectifierComponent implements OnInit {
           "Authorization" : "Bearer "+this.tokenService.getToken(),
           "Content-Type" : "application/json",
         },
-        url: environment.API_URL+"api/v1/ne/select2",
+        url: environment.API_URL+"api/v1/site/select2",
         data: function (params:any) {
 
           console.log(params)
@@ -346,7 +513,7 @@ export class RectifierComponent implements OnInit {
         delay: 100,
         cache: true
       },
-      placeholder: 'Search NE',
+      placeholder: 'Search Site',
       language: {
           noResults: function () {
               return "No records found!";
@@ -354,9 +521,9 @@ export class RectifierComponent implements OnInit {
       },
     };
 
-    this.optionsBattery = {
+    this.optionsManufacturer = {
       theme: "bootstrap",
-      multiple: true,
+      multiple: false,
       closeOnSelect: true,
       width: '100%',
       ajax: {
@@ -364,7 +531,7 @@ export class RectifierComponent implements OnInit {
           "Authorization" : "Bearer "+this.tokenService.getToken(),
           "Content-Type" : "application/json",
         },
-        url: environment.API_URL+"api/v1/battery/select2",
+        url: environment.API_URL+"api/v1/manufacturer/select2",
         data: function (params:any) {
 
           console.log(params)
@@ -380,7 +547,7 @@ export class RectifierComponent implements OnInit {
         delay: 100,
         cache: true
       },
-      placeholder: 'Search Battery',
+      placeholder: 'Search Manufacturer',
       language: {
           noResults: function () {
               return "No records found!";
@@ -475,6 +642,265 @@ export class RectifierComponent implements OnInit {
 
       this.modalService.dismissAll();
 
+    });
+
+  }
+
+
+  view(targetModal:any, raw:any) {
+
+    console.log(raw)
+
+    this.modalService.open(targetModal, {
+      centered: true,
+      backdrop: 'static',
+      fullscreen: true,
+      keyboard: true,
+      size: 'xl',
+    });
+
+    this.rectifierItemForm = this.fb.group({
+      network_element_code: [''],
+      breaker_no: [''],
+      current: [''],
+
+    });
+
+    this.optionsNe = {
+      theme: "bootstrap",
+      multiple: false,
+      closeOnSelect: true,
+      width: '100%',
+      ajax: {
+        headers: {
+          "Authorization" : "Bearer "+this.tokenService.getToken(),
+          "Content-Type" : "application/json",
+        },
+        url: environment.API_URL+"api/v1/ne/select2",
+        data: function (params:any) {
+
+          console.log(params)
+          var query = {
+            search: params.term,
+          }
+          // Query parameters will be ?search=[term]&type=public
+          console.log(query)
+          return query;
+        },
+        type: "get",
+        dataType: 'json',
+        delay: 100,
+        cache: true
+      },
+      placeholder: 'Search NE',
+      language: {
+          noResults: function () {
+              return "No records found!";
+          }
+      },
+    };
+
+    // dtables
+    this.dtOptionsRectifierItems = {
+      destroy: true,
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      serverSide: true,
+      processing: true,
+      stateSave: true,
+      scrollX: true,
+      ajax: (dataTablesParameters: any, callback) => {
+       
+        dataTablesParameters['dc_panel_code'] = raw.code;
+        console.log(dataTablesParameters)
+        this.rectifierItems = [];
+        this.rectifierItemService.list(dataTablesParameters).subscribe(async resp => {
+          this.rectifierItems = await resp.data;
+          console.log(resp)
+
+          callback({
+            recordsTotal: resp.recordsTotal,
+            recordsFiltered: resp.recordsFiltered,
+            data: []
+          });
+
+        });
+      },
+      columns: [
+        // { data: 'code', width:'6%'}, 
+        { data: 'ne_name', width: '20%'}, 
+        { data: 'breaker_no', width: '30%'}, 
+        { data: 'current', width: '14%'}, 
+        { data: null, title: 'Actions', width: '5%', orderable:false},      
+      ],
+
+    };
+
+    this.rectifierItemForm = this.fb.group({
+      id: [''],
+      dc_panel_code: raw.code,
+      network_element_code: [''],
+      breaker_no: [''],
+      current: [''],
+    });
+
+  }
+
+  editDcPanelItem(targetModal:any, raw:any) {
+  
+    console.log(raw)
+
+    this.editRectifierItemModal = this.modalService.open(targetModal, {
+      centered: true,
+      backdrop: 'static',
+      fullscreen: true,
+      keyboard: true,
+      size: 'xl',
+    });
+
+    this.defaultNe = [
+      {
+        id: raw.ne_code,
+        text: raw.ne_name
+      }
+    ];
+
+    console.log(this.defaultNe)
+
+    this.optionsNe = {
+      theme: "bootstrap",
+      multiple: false,
+      closeOnSelect: true,
+      width: '100%',
+      ajax: {
+        headers: {
+          "Authorization" : "Bearer "+this.tokenService.getToken(),
+          "Content-Type" : "application/json",
+        },
+        url: environment.API_URL+"api/v1/ne/select2",
+        data: function (params:any) {
+
+          console.log(params)
+          var query = {
+            search: params.term,
+          }
+          // Query parameters will be ?search=[term]&type=public
+          console.log(query)
+          return query;
+        },
+        type: "get",
+        dataType: 'json',
+        delay: 100,
+        cache: true
+      },
+      placeholder: 'Search NE',
+      language: {
+          noResults: function () {
+              return "No records found!";
+          }
+      },
+    };
+
+    this.rectifierItemForm.patchValue({
+      id: raw.id,
+      code: raw.code,
+      dc_panel_code: raw.dc_panel_code,
+      network_element_code: raw.ne_code,
+      breaker_no: raw.breaker_no,
+      current: raw.current,
+    });
+
+  }
+
+  removeDcPanelItem(raw: any) {
+    
+    Swal.fire({
+      title: 'Are you sure you want to delete this record?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        this.rectifierItemService.delete(raw).subscribe((data: any) => {
+
+          $('#dt1').DataTable().ajax.reload();
+
+          Swal.fire(
+            'Deleted!',
+            'This record has been deleted.',
+            'success'
+          )
+
+        });
+
+      }
+    })
+  }
+
+  async onSubmitRectifierItem(): Promise<any> {
+    
+    const raw = this.rectifierItemForm.getRawValue();
+    console.log(raw)
+
+    await this.rectifierItemService.save(raw).subscribe((data: any) => {
+
+      console.log(data)
+      $('#dt1').DataTable().ajax.reload();
+
+      Swal.fire({
+        // position: 'top-end',
+        icon: 'success',
+        title: 'Successfully save!',
+        showConfirmButton: false,
+        timer: 1500
+      })
+
+      this.rectifierItemForm = this.fb.group({
+        id: [''],
+        dc_panel_code: raw.dc_panel_code,
+        code: [''],
+        network_element_code: [''],
+        breaker_name: [''],
+        current: [''],
+      });
+      
+    });
+
+  }
+
+  async onUpdateRectifierItem(): Promise<any> {
+    
+    const raw = this.rectifierItemForm.getRawValue();
+    console.log(raw)
+
+    await this.rectifierItemService.update(raw).subscribe((data: any) => {
+
+      console.log(data)
+      $('#dt1').DataTable().ajax.reload();
+
+      Swal.fire({
+        // position: 'top-end',
+        icon: 'success',
+        title: 'Successfully save!',
+        showConfirmButton: false,
+        timer: 1500
+      })
+
+      this.rectifierItemForm = this.fb.group({
+        id: [''],
+        dc_panel_code: raw.dc_panel_code,
+        code: [''],
+        network_element_code: [''],
+        breaker_name: [''],
+        current: [''],
+      });
+
+      this.editRectifierItemModal.dismiss();
+      
     });
 
   }

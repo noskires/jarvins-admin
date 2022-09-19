@@ -6,24 +6,24 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class SvService {
+export class DcPanelItemService {
 
   constructor(private http: HttpClient) {}
 
   list(params: any): Observable<any> {
-    return this.http.post(environment.API_URL+'api/v1/sv/list', params);
+    return this.http.post(environment.API_URL+'api/v1/dc-panel-item/list', params);
   }
 
   save(params: any): Observable<any> {
-    return this.http.post(environment.API_URL+'api/v1/sv/save', params);
+    return this.http.post(environment.API_URL+'api/v1/dc-panel-item/save', params);
   }
 
   update(params: any): Observable<any> {
-    return this.http.post(environment.API_URL+'api/v1/sv/update', params);
+    return this.http.post(environment.API_URL+'api/v1/dc-panel-item/update', params);
   }
 
   delete(params: any): Observable<any> {
-    return this.http.post(environment.API_URL+'api/v1/sv/delete', params);
+    return this.http.post(environment.API_URL+'api/v1/dc-panel-item/delete', params);
   }
-  
+
 }

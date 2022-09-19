@@ -53,9 +53,7 @@ export class HomeComponent implements OnInit {
       private modalService: NgbModal,
       private fb: FormBuilder,
       private router: Router
-      ) {
-  
-    }
+      ) {}
   
 
   ngOnInit(): void {

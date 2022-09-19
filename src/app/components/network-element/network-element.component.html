@@ -164,28 +164,28 @@
 
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label>FOC Assignment Uplink 1</label>
+                        <label>FOC Asgmt. Uplink 1</label>
                         <input type="text" class="form-control" formControlName="foc_assignment_uplink1" id="foc_assignment_uplink1" required="true">
                     </div>
                 </div>
 
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label>FOC Assignment Uplink 2</label>
+                        <label>FOC Asgmt. Uplink 2</label>
                         <input type="text" class="form-control" formControlName="foc_assignment_uplink2" id="foc_assignment_uplink2" required="true">
                     </div>
                 </div>
 
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label>HON Assignment Uplink Port 1</label>
+                        <label>HON Asgmt. Uplink Port 1</label>
                         <input type="text" class="form-control" formControlName="hon_assignment_uplink_port1" id="hon_assignment_uplink_port1" required="true">
                     </div>
                 </div>
 
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label>HON Assignment Uplink Port 2</label>
+                        <label>HON Asgmt. Uplink Port 2</label>
                         <input type="text" class="form-control" formControlName="hon_assignment_uplink_port2" id="hon_assignment_uplink_port2" required="true">
                     </div>
                 </div>
@@ -279,28 +279,28 @@
 
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label>FOC Assignment Uplink 1</label>
+                        <label>FOC Asgmt. Uplink 1</label>
                         <input type="text" class="form-control" formControlName="foc_assignment_uplink1" id="foc_assignment_uplink1" required="true">
                     </div>
                 </div>
 
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label>FOC Assignment Uplink 2</label>
+                        <label>FOC Asgmt. Uplink 2</label>
                         <input type="text" class="form-control" formControlName="foc_assignment_uplink2" id="foc_assignment_uplink2" required="true">
                     </div>
                 </div>
 
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label>HON Assignment Uplink Port 1</label>
+                        <label>HON Asgmt. Uplink Port 1</label>
                         <input type="text" class="form-control" formControlName="hon_assignment_uplink_port1" id="hon_assignment_uplink_port1" required="true">
                     </div>
                 </div>
 
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label>HON Assignment Uplink Port 2</label>
+                        <label>HON Asgmt. Uplink Port 2</label>
                         <input type="text" class="form-control" formControlName="hon_assignment_uplink_port2" id="hon_assignment_uplink_port2" required="true">
                     </div>
                 </div>
@@ -397,63 +397,54 @@
                 
                 <div class="col-md-9">
                     <div class="card">
-                        <!-- <div class="card-header p-2">
-                            <ul class="nav nav-pills">
-                                <li class="nav-item"><a class="nav-link active" href="#members" data-toggle="tab">Team Members</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#trainings" data-toggle="tab">Trainings and Certification</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#tools" data-toggle="tab">TTE</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#sv" data-toggle="tab">SV</a></li>
-                            </ul>
-                        </div> -->
+
+                        <div class="ribbon-wrapper">
+                            <div class="ribbon bg-info">
+                              PRIMARY
+                            </div>
+                        </div>
+
                         <div class="card-body">
                             <div class="tab-content">
                                 <div class="active tab-pane" id="members">
-                                    
-                                    <div class="post">
+
+                                    <div class="post" *ngIf="filtersLoaded | async">
+                                        <strong><i class="nav-icon fas fa-bolt"></i> DC Panel </strong>
+                                        <!-- <hr> -->
+                                        
+                                        <table class="row-border hover" class="table table-striped table-bordered" style="width:100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Manufacturer</th>
+                                                    <th>DC Panel</th>
+                                                    <th>Breakder No</th>
+                                                    <th>Current</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody *ngIf="neData.dc_panel_item.length>0">
+                                                <tr>
+                                                    <td [innerHTML]="neData.dc_panel_item[0]?.dc_panel?.manufacturer_name"> </td>
+                                                    <td [innerHTML]="neData.dc_panel_item[0]?.dc_panel?.dc_panel_name"> </td>
+                                                    <td [innerHTML]="neData.dc_panel_item[0]?.breaker_no"> </td>
+                                                    <td [innerHTML]="neData.dc_panel_item[0]?.current"> </td>
+                                                </tr>
+                                            </tbody>
+                                            <tbody *ngIf="neData.dc_panel_item.length==0">
+                                                <tr>
+                                                    <td colspan="4" class="no-data-available text-center">No data available</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="post" *ngIf="filtersLoaded | async">
                                         <strong><i class="nav-icon fas fa-pallet"></i> Rectifier </strong>
-                                        <hr>
-
-                                        <table *ngIf="rectifier !== undefined" datatable [dtOptions]="dtOptionsRectifier" class="row-border hover" class="table table-striped table-bordered" style="width:100%;">
+                                        <!-- <hr> -->
+                                        <table class="row-border hover" class="table table-striped table-bordered" style="width:100%;">
                                             <thead>
                                                 <tr>
                                                     <th>Manufacturer</th>
-                                                    <th>Index No</th>
-                                                    <th>Model</th>
-                                                    <th>Maintainer</th>
-                                                    <th>Status</th>
-                                                    <th>Date Installed</th>
-                                                    <th>Date Accepted</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody *ngIf="rectifier?.length != 0">
-                                                <tr *ngFor="let rectifier of rectifier">
-                                                    <td>{{ rectifier.rectifier_manufacturer }}</td>
-                                                    <td>{{ rectifier.rectifier_index_no }}</td>
-                                                    <td>{{ rectifier.rectifier_model }}</td>
-                                                    <td>{{ rectifier.rectifier_maintainer }}</td>
-                                                    <td>{{ rectifier.rectifier_status }}</td>
-                                                    <td>{{ rectifier.rectifier_date_installed }}</td>
-                                                    <td>{{ rectifier.rectifier_date_accepted }}</td>
-                                                </tr>
-                                            </tbody>
-                                            <tbody *ngIf="rectifier?.length == 0">
-                                                <tr>
-                                                    <td colspan="7" class="no-data-available text-center">No data available in table</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-
-                                    <div class="post">
-                                        <strong><i class="nav-icon fas fa-battery-full"></i> Battery </strong>
-                                        <hr>
-
-                                        <table *ngIf="battery !== undefined" datatable [dtOptions]="dtOptionsBattery" class="row-border hover" class="table table-striped table-bordered" style="width:100%;">
-                                            <thead>
-                                                <tr>
                                                     <th>Rectifier</th>
-                                                    <th>Manufacturer</th>
                                                     <th>Index No</th>
                                                     <th>Model</th>
                                                     <th>Maintainer</th>
@@ -462,67 +453,193 @@
                                                     <th>Date Accepted</th>
                                                 </tr>
                                             </thead>
-                                            <tbody *ngIf="battery?.length != 0">
-                                                <tr *ngFor="let battery of battery">
-                                                    <td>{{ battery.rectifier_manufacturer }}</td>
-                                                    <td>{{ battery.battery_manufacturer }}</td>
-                                                    <td>{{ battery.battery_index_no }}</td>
-                                                    <td>{{ battery.battery_model }}</td>
-                                                    <td>{{ battery.battery_maintainer }}</td>
-                                                    <td>{{ battery.battery_status }}</td>
-                                                    <td>{{ battery.battery_date_installed }}</td>
-                                                    <td>{{ battery.battery_date_accepted }}</td>
+                                            <tbody *ngIf="neData.dc_panel_item.length>0">
+                                                <tr>
+                                                    <td [innerHTML]="neData.dc_panel_item[0]?.dc_panel?.rectifier?.manufacturer_name"> </td>
+                                                    <td [innerHTML]="neData.dc_panel_item[0]?.dc_panel?.rectifier?.rectifier_name"> </td>
+                                                    <td [innerHTML]="neData.dc_panel_item[0]?.dc_panel?.rectifier?.index_no"> </td>
+                                                    <td [innerHTML]="neData.dc_panel_item[0]?.dc_panel?.rectifier?.model"> </td>
+                                                    <td [innerHTML]="neData.dc_panel_item[0]?.dc_panel?.rectifier?.maintainer"> </td>
+                                                    <td [innerHTML]="neData.dc_panel_item[0]?.dc_panel?.rectifier?.status"> </td>
+                                                    <td [innerHTML]="neData.dc_panel_item[0]?.dc_panel?.rectifier?.date_installed"> </td>
+                                                    <td [innerHTML]="neData.dc_panel_item[0]?.dc_panel?.rectifier?.date_accepted"> </td>
                                                 </tr>
                                             </tbody>
-                                            <tbody *ngIf="battery?.length == 0">
+                                            <tbody *ngIf="neData.dc_panel_item.length==0">
                                                 <tr>
-                                                    <td colspan="7" class="no-data-available text-center">No data available in table</td>
+                                                    <td colspan="8" class="no-data-available text-center">No data available</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="post" *ngIf="filtersLoaded | async">
+                                        <strong><i class="nav-icon fas fa-battery-full"></i> Battery </strong>
+                                        <!-- <hr> -->
+                                        <table class="row-border hover" class="table table-striped table-bordered" style="width:100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Manufacturer</th>
+                                                    <th>Battery</th>
+                                                    <th>Index No</th>
+                                                    <th>Model</th>
+                                                    <th>Maintainer</th>
+                                                    <th>Status</th>
+                                                    <th>Date Installed</th>
+                                                    <th>Date Accepted</th>
+                                                </tr>
+                                            </thead>
+                                            <!-- <tbody *ngIf="neData.dc_panel_item[0]?.dc_panel?.rectifier.length>0"> -->
+                                            <tbody>
+                                                <tr *ngFor="let battery of neData.dc_panel_item[0]?.dc_panel?.rectifier?.batteries">
+                                                    <td [innerHTML]="battery.manufacturer_name"> </td>
+                                                    <td [innerHTML]="battery.battery_name"> </td>
+                                                    <td [innerHTML]="battery.index_no"> </td>
+                                                    <td [innerHTML]="battery.model"> </td>
+                                                    <td [innerHTML]="battery.maintainer"> </td>
+                                                    <td [innerHTML]="battery.status"> </td>
+                                                    <td [innerHTML]="battery.date_installed"> </td>
+                                                    <td [innerHTML]="battery.date_accepted"> </td>
+                                                </tr>
+                                            </tbody>
+                                            <tbody *ngIf="neData.dc_panel_item[0]?.dc_panel?.rectifier.length==0">
+                                                <tr>
+                                                    <td colspan="8" class="no-data-available text-center">No data available</td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                     
-                                </div>
-                                
-                                <div class="tab-pane" id="trainings">
-                                
-                                    <div class="post">
-                                        <strong><i class="nav-icon fas fa-certificate"></i> Trainings and Certification</strong>
-                                        
-                                        <hr>
-                                        
-                                    </div>
-                                </div>
-
-                                <div class="tab-pane" id="tools">
-                                
-                                    <div class="post">
-                                        <strong><i class="nav-icon fas fa-tools"></i> Tools and Testing Equipments</strong>
-                                        
-                                        <hr>
-                                        
-                                        
-                                    
-                                    </div>
-                                </div>
-
-
-                                <div class="tab-pane" id="sv">
-                                
-                                    <div class="post">
-                                        <strong><i class="nav-icon fas fas fa-car"></i> Service Vehicle</strong>
-
-                                        <hr>
-                                        
-                                  
-                                    
-                                    </div>
                                 </div>
                                 
                             </div>
                         
                         </div>
                     </div>
+
+
+                    <div class="card" *ngIf="filtersLoaded | async" >
+
+
+                        <div class="ribbon-wrapper ribbon-lg" *ngIf="neData.dc_panel_item[1]">
+                            <div class="ribbon bg-info">
+                              SECONDARY
+                            </div>
+                        </div>
+
+                        <div class="card-body" *ngIf="neData.dc_panel_item[1]">
+                            <div class="tab-content">
+                                <div class="active tab-pane" id="members">
+
+                                    <div class="post">
+                                        <strong><i class="nav-icon fas fa-bolt"></i> DC Panel </strong>
+                                        <!-- <hr> -->
+                                       
+                                        <table class="row-border hover" class="table table-striped table-bordered" style="width:100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Manufacturer</th>
+                                                    <th>DC Panel</th>
+                                                    <th>Breakder No</th>
+                                                    <th>Current</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody *ngIf="neData.dc_panel_item.length>0">
+                                                <tr>
+                                                    <td [innerHTML]="neData.dc_panel_item[1]?.dc_panel?.manufacturer_name"> </td>
+                                                    <td [innerHTML]="neData.dc_panel_item[1]?.dc_panel?.dc_panel_name"> </td>
+                                                    <td [innerHTML]="neData.dc_panel_item[1]?.breaker_no"> </td>
+                                                    <td [innerHTML]="neData.dc_panel_item[1]?.current"> </td>
+                                                </tr>
+                                            </tbody>
+                                            <tbody *ngIf="neData.dc_panel_item.length==0">
+                                                <tr>
+                                                    <td colspan="4" class="no-data-available text-center">No data available</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="post" *ngIf="filtersLoaded | async">
+                                        <strong><i class="nav-icon fas fa-pallet"></i> Rectifier </strong>
+                                        <!-- <hr> -->
+                                        <table class="row-border hover" class="table table-striped table-bordered" style="width:100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Manufacturer</th>
+                                                    <th>Rectifier</th>
+                                                    <th>Index No</th>
+                                                    <th>Model</th>
+                                                    <th>Maintainer</th>
+                                                    <th>Status</th>
+                                                    <th>Date Installed</th>
+                                                    <th>Date Accepted</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody *ngIf="neData.dc_panel_item.length>0">
+                                                <tr>
+                                                    <td [innerHTML]="neData.dc_panel_item[1]?.dc_panel?.rectifier?.manufacturer_name"> </td>
+                                                    <td [innerHTML]="neData.dc_panel_item[1]?.dc_panel?.rectifier?.rectifier_name"> </td>
+                                                    <td [innerHTML]="neData.dc_panel_item[1]?.dc_panel?.rectifier?.index_no"> </td>
+                                                    <td [innerHTML]="neData.dc_panel_item[1]?.dc_panel?.rectifier?.model"> </td>
+                                                    <td [innerHTML]="neData.dc_panel_item[1]?.dc_panel?.rectifier?.maintainer"> </td>
+                                                    <td [innerHTML]="neData.dc_panel_item[1]?.dc_panel?.rectifier?.status"> </td>
+                                                    <td [innerHTML]="neData.dc_panel_item[1]?.dc_panel?.rectifier?.date_installed"> </td>
+                                                    <td [innerHTML]="neData.dc_panel_item[1]?.dc_panel?.rectifier?.date_accepted"> </td>
+                                                </tr>
+                                            </tbody>
+                                            <tbody *ngIf="neData.dc_panel_item.length==0">
+                                                <tr>
+                                                    <td colspan="8" class="no-data-available text-center">No data available</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="post" *ngIf="filtersLoaded | async">
+                                        <strong><i class="nav-icon fas fa-battery-full"></i> Battery </strong>
+                                        <!-- <hr> -->
+                                        <table class="row-border hover" class="table table-striped table-bordered" style="width:100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Manufacturer</th>
+                                                    <th>Battery</th>
+                                                    <th>Index No</th>
+                                                    <th>Model</th>
+                                                    <th>Maintainer</th>
+                                                    <th>Status</th>
+                                                    <th>Date Installed</th>
+                                                    <th>Date Accepted</th>
+                                                </tr>
+                                            </thead>
+                                            <!-- <tbody *ngIf="neData.dc_panel_item[1]?.dc_panel?.rectifier?.batteries>0"> -->
+                                            <tbody>
+                                                <tr *ngFor="let battery of neData.dc_panel_item[1]?.dc_panel?.rectifier?.batteries">
+                                                    <td [innerHTML]="battery.manufacturer_name"> </td>
+                                                    <td [innerHTML]="battery.battery_name"> </td>
+                                                    <td [innerHTML]="battery.index_no"> </td>
+                                                    <td [innerHTML]="battery.model"> </td>
+                                                    <td [innerHTML]="battery.maintainer"> </td>
+                                                    <td [innerHTML]="battery.status"> </td>
+                                                    <td [innerHTML]="battery.date_installed"> </td>
+                                                    <td [innerHTML]="battery.date_accepted"> </td>
+                                                </tr>
+                                            </tbody>
+                                            <tbody *ngIf="neData.dc_panel_item[1]?.dc_panel?.rectifier?.batteries==0">
+                                                <tr>
+                                                    <td colspan="8" class="no-data-available text-center">No data available</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
+                                </div>
+                                
+                            </div>
+                        
+                        </div>
+                    </div>
+
                 
                 </div>
             

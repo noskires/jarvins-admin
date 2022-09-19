@@ -24,13 +24,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">Battery <i class="fas fa-pencil"></i></h1>
+                <h1 class="m-0">DC Panel <i class="fas fa-pencil"></i></h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
                     <li class="breadcrumb-item">Support Facilities</li>
-                    <li class="breadcrumb-item active">Battery</li>
+                    <li class="breadcrumb-item active">DC Panel</li>
                     </ol>
                 </div>
             </div>
@@ -45,13 +45,13 @@
                   
                         <div class="card-body">
                             <div class="tab-content"> 
-                                <button type="button" class="btn btn-sm btn-primary" (click)="add(addBatteryModal)"><i class="fa fa-plus-square" aria-hidden="true"></i> ADD NEW</button>
+                                <button type="button" class="btn btn-sm btn-primary" (click)="add(addDcPanelModal)"><i class="fa fa-plus-square" aria-hidden="true"></i> ADD NEW</button>
                                 <br>
                                 <br>
                                 <div class="active tab-pane" id="activity">
                                     
                                     <div class="post">
-                                        <table *ngIf="battery !== undefined" datatable [dtOptions]="dtOptions" class="row-border hover" id="dt0" class="table table-striped table-bordered" style="width:100%;">
+                                        <table *ngIf="dcPanel !== undefined" datatable [dtOptions]="dtOptions" class="row-border hover" id="dt0" class="table table-striped table-bordered" style="width:100%;">
                                             <thead>
                                                 <tr>
                                                 <th>Site</th>
@@ -66,25 +66,25 @@
                                                 <th class="text-center">Actions</th>
                                                 </tr>
                                             </thead>
-                                            <tbody *ngIf="battery?.length != 0">
-                                                <tr *ngFor="let battery of battery">
-                                                <td>{{ battery.site_name }}</td>
-                                                <td>{{ battery.rectifier_name }}</td>
-                                                <td>{{ battery.battery_manufacturer_name }}</td>
-                                                <td>{{ battery.index_no }}</td>
-                                                <td>{{ battery.model }}</td>
-                                                <td>{{ battery.maintainer }}</td>
-                                                <td>{{ battery.status }}</td>
-                                                <td>{{ battery.date_installed }}</td>
-                                                <td>{{ battery.date_accepted }}</td>
+                                            <tbody *ngIf="dcPanel?.length != 0">
+                                                <tr *ngFor="let dcPanel of dcPanel">
+                                                <td>{{ dcPanel.site_name }}</td>
+                                                <td>{{ dcPanel.rectifier_name }}</td>
+                                                <td>{{ dcPanel.manufacturer_name }}</td>
+                                                <td>{{ dcPanel.index_no }}</td>
+                                                <td>{{ dcPanel.model }}</td>
+                                                <td>{{ dcPanel.maintainer }}</td>
+                                                <td>{{ dcPanel.status }}</td>
+                                                <td>{{ dcPanel.date_installed }}</td>
+                                                <td>{{ dcPanel.date_accepted }}</td>
                                                 <td class="text-center">
-                                                    <a href="" [routerLink]="" (click)="edit(editBatteryModal, battery)">&nbsp; <i class="fas fa-pencil-alt"> </i> </a> 
-                                                    <a  [routerLink]="" (click)="remove(battery)"> <i class="fas fa-trash-alt"> </i> </a> 
-                                                    <!-- <a  [routerLink]="" (click)="view(viewTrainingModal, training)"> <i class="fas fa-eye"> </i> </a>  -->
+                                                    <a href="" [routerLink]="" (click)="edit(editDcPanelModal, dcPanel)">&nbsp; <i class="fas fa-pencil-alt"> </i> </a> 
+                                                    <a  [routerLink]="" (click)="remove(dcPanel)"> <i class="fas fa-trash-alt"> </i> </a> 
+                                                    <a  [routerLink]="" (click)="view(viewDcPanelModal, dcPanel)"> <i class="fas fa-eye"> </i> </a> 
                                                 </td>
                                                 </tr>
                                             </tbody>
-                                            <tbody *ngIf="battery?.length == 0">
+                                            <tbody *ngIf="dcPanel?.length == 0">
                                                 <tr>
                                                     <td colspan="14" class="no-data-available">No data!</td>
                                                 </tr>
@@ -104,9 +104,9 @@
 </div>
 
 
-<ng-template #addBatteryModal let-modal>
+<ng-template #addDcPanelModal let-modal>
     <div class="modal-header">
-        <h5 class="modal-title" id="editProfileLabel">Add Battery</h5>
+        <h5 class="modal-title" id="editProfileLabel">Add DC Panel</h5>
         <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -114,11 +114,10 @@
 
         
     <div class="modal-body">
-        <form [formGroup]="batteryForm" (ngSubmit)="onSubmitSave()">
+        <form [formGroup]="dcPanelForm" (ngSubmit)="onSubmitSave()">
 
             <div class="row">
-              
-
+            
                 <div class="col-md-3">
                     <div class="form-group">
                         <label>Rectifier</label>
@@ -135,7 +134,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-1">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label>Index No.</label>
                         <input type="text" class="form-control" formControlName="index_no" id="index_no" required="true">
@@ -179,69 +178,50 @@
 
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label>Capacity</label>
-                        <input type="text" class="form-control" formControlName="capacity" id="capacity" required="true">
+                        <label>Fuse Breaker Number</label>
+                        <input type="text" class="form-control" formControlName="fuse_breaker_number" id="fuse_breaker_number" required="true">
                     </div>
                 </div>
 
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label>Type</label>
-                        <input type="text" class="form-control" formControlName="type" id="type" required="true">
+                        <label>Fuse Breaker Rating</label>
+                        <input type="text" class="form-control" formControlName="fuse_breaker_rating" id="fuse_breaker_rating" required="true">
                     </div>
                 </div>
 
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label>Brand</label>
-                        <input type="text" class="form-control" formControlName="brand" id="brand" required="true">
+                        <label>Feed Source</label>
+                        <input type="text" class="form-control" formControlName="feed_source" id="feed_source" required="true">
                     </div>
                 </div>
 
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label>Individual Cell Voltage</label>
-                        <select class="form-control" formControlName="individual_cell_voltage" (ngModelChange)="onChangeIndividualCellVoltage($event)" placeholder="Select Ind Cell Voltage">
-                            <option [value]=null>Select No. of cells</option>
-                            <option [value]=2>2</option>
-                            <option [value]=12>12</option>
-                            <option [value]=48>48</option>
-                        </select>
+                        <label>No. of runs and cable size</label>
+                        <input type="text" class="form-control" formControlName="no_of_runs_and_cable_size" id="no_of_runs_and_cable_size" required="true">
                     </div>
                 </div>
 
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label>No. of Cells</label>
-                        <input type="text" class="form-control" formControlName="no_of_cells" id="no_of_cells" required="true" readonly>
+                        <label>Source Voltage</label>
+                        <input type="text" class="form-control" formControlName="source_voltage" id="source_voltage" required="true">
                     </div>
                 </div>
 
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label>Cell Status</label>
-                        <input type="text" class="form-control" formControlName="cell_status" id="cell_status" required="true">
+                        <label>Source Electric Current</label>
+                        <input type="text" class="form-control" formControlName="source_electric_current" id="source_electric_current" required="true">
                     </div>
                 </div>
 
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label>Cable Size</label>
-                        <input type="text" class="form-control" formControlName="cable_size" id="cable_size" required="true">
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label>Back Up Time</label>
-                        <input type="text" class="form-control" formControlName="backup_time" id="backup_time" required="true">
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label>Float Voltage Requirement</label>
-                        <input type="text" class="form-control" formControlName="float_voltage_requirement" id="float_voltage_requirement" required="true">
+                        <label>Status of breakers</label>
+                        <input type="text" class="form-control" formControlName="status_of_breakers" id="status_of_breakers" required="true">
                     </div>
                 </div>
 
@@ -265,22 +245,22 @@
     </div>
 </ng-template>
 
-<ng-template #editBatteryModal let-modal>
+<ng-template #editDcPanelModal let-modal>
     <div class="modal-header">
-        <h5 class="modal-title" id="editProfileLabel">Edit Battery Details</h5>
+        <h5 class="modal-title" id="editProfileLabel">Edit DC Panel Details</h5>
         <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
         
     <div class="modal-body">
-        <form [formGroup]="batteryForm" (ngSubmit)="onSubmitUpdate()">
+        <form [formGroup]="dcPanelForm" (ngSubmit)="onSubmitUpdate()">
 
             <div class="row">
 
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label>Rectifier </label>
+                        <label>Rectifier</label>
                         <ng-select2 style="width: 100%" formControlName="rectifier" [data]="defaultRectifier" [options]="optionsRectifier" >
                         </ng-select2>
                     </div>
@@ -294,7 +274,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-1">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label>Index No.</label>
                         <input type="text" class="form-control" formControlName="index_no" id="index_no" required="true">
@@ -338,69 +318,50 @@
 
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label>Capacity</label>
-                        <input type="text" class="form-control" formControlName="capacity" id="capacity" required="true">
+                        <label>Fuse Breaker Number</label>
+                        <input type="text" class="form-control" formControlName="fuse_breaker_number" id="fuse_breaker_number" required="true">
                     </div>
                 </div>
 
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label>Type</label>
-                        <input type="text" class="form-control" formControlName="type" id="type" required="true">
+                        <label>Fuse Breaker Rating</label>
+                        <input type="text" class="form-control" formControlName="fuse_breaker_rating" id="fuse_breaker_rating" required="true">
                     </div>
                 </div>
 
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label>Brand</label>
-                        <input type="text" class="form-control" formControlName="brand" id="brand" required="true">
+                        <label>Feed Source</label>
+                        <input type="text" class="form-control" formControlName="feed_source" id="feed_source" required="true">
                     </div>
                 </div>
 
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label>Individual Cell Voltage</label>
-                        <select class="form-control" formControlName="individual_cell_voltage" (ngModelChange)="onChangeIndividualCellVoltage($event)" placeholder="Select Ind Cell Voltage">
-                            <option [value]=null>Select No. of cells</option>
-                            <option [value]=2>2</option>
-                            <option [value]=12>12</option>
-                            <option [value]=48>48</option>
-                        </select>
+                        <label>No. of runs and cable size</label>
+                        <input type="text" class="form-control" formControlName="no_of_runs_and_cable_size" id="no_of_runs_and_cable_size" required="true">
                     </div>
                 </div>
 
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label>No. of Cells</label>
-                        <input type="text" class="form-control" formControlName="no_of_cells" id="no_of_cells" required="true" readonly>
+                        <label>Source Voltage</label>
+                        <input type="text" class="form-control" formControlName="source_voltage" id="source_voltage" required="true">
                     </div>
                 </div>
 
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label>Cell Status</label>
-                        <input type="text" class="form-control" formControlName="cell_status" id="cell_status" required="true">
+                        <label>Source Electric Current</label>
+                        <input type="text" class="form-control" formControlName="source_electric_current" id="source_electric_current" required="true">
                     </div>
                 </div>
 
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label>Cable Size</label>
-                        <input type="text" class="form-control" formControlName="cable_size" id="cable_size" required="true">
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label>Back Up Time</label>
-                        <input type="text" class="form-control" formControlName="backup_time" id="backup_time" required="true">
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label>Float Voltage Requirement</label>
-                        <input type="text" class="form-control" formControlName="float_voltage_requirement" id="float_voltage_requirement" required="true">
+                        <label>Status of breakers</label>
+                        <input type="text" class="form-control" formControlName="status_of_breakers" id="status_of_breakers" required="true">
                     </div>
                 </div>
 
@@ -414,7 +375,6 @@
                 
             </div>
 
-        
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm  btn-secondary" (click)="modal.dismiss()">Close</button>
                 <button type="submit" class="btn btn-sm  btn-primary">Save</button>
@@ -422,6 +382,137 @@
         </form>
 
     </div>
+</ng-template>
+
+<ng-template #viewDcPanelModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="editProfileLabel">DC Panel {{title}} </h5>
+        <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+        
+    <div class="modal-body">
+        <form [formGroup]="dcPanelItemForm" (ngSubmit)="onSubmitDcPanelItem()">
+
+            <div class="row">
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Network Element</label><br>
+                        <ng-select2 style="width: 100%" formControlName="network_element_id" [options]="optionsNe" >
+                        </ng-select2>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Breaker No</label>
+                        <input type="text" class="form-control" formControlName="breaker_no" id="breaker_no" required="true">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Current</label>
+                        <input type="text" class="form-control" formControlName="current" id="current" required="true">
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-sm btn-primary">Save</button>
+            </div>
+
+        </form>
+
+        <hr> 
+
+        <div class="post">
+
+    
+            <table *ngIf="dcPanelItems !== undefined" datatable [dtOptions]="dtOptionsDcPanelItems" id="dt1" class="row-border hover" class="table table-striped table-bordered" style="width:100%;">
+                <thead>
+                    <tr>
+                        <!-- <th>ID</th> -->
+                        <th>Network Element</th>
+                        <th>Breaker</th>
+                        <th>Current</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="dcPanelItems?.length!=0">
+                    <tr *ngFor="let dcPanelItem of dcPanelItems">
+                        <!-- <td>{{ dcPanelItem.code }}</td> -->
+                        <td>{{ dcPanelItem.ne_name }}</td>
+                        <td>{{ dcPanelItem.breaker_no }}</td>
+                        <td>{{ dcPanelItem.current }}</td>
+                        <td class="text-center">
+                            <a [routerLink]="" href="#" (click)="editDcPanelItem(editDcPanelItemModal, dcPanelItem)"> <i class="fas fa-pencil-alt"> </i> </a> 
+                            <a [routerLink]="" href="#" (click)="removeDcPanelItem(dcPanelItem)"> <i class="fas fa-trash-alt"> </i> </a> 
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody *ngIf="dcPanelItems?.length==0">
+                    <tr>
+                        <td colspan="7" class="no-data-available text-center">No data available in table</td>
+                    </tr>
+                </tbody>
+            </table>
+        
+        </div>
+
+    </div>
+</ng-template>
+
+<ng-template #editDcPanelItemModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="editProfileLabel">Edit DC Panel Item Details</h5>
+        <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+        
+    <div class="modal-body">
+        <form [formGroup]="dcPanelItemForm" (ngSubmit)="onUpdateDcPanelItem()">
+
+            <div class="row">
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Network Element </label><br>
+                        <ng-select2 style="width: 100%" formControlName="network_element_id" [data]="defaultNe" [options]="optionsNe" >
+                        </ng-select2>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Breaker No/ Fuse No</label>
+                        <input type="text" class="form-control" formControlName="breaker_no" id="breaker_no" required="true">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Current</label>
+                        <input type="text" class="form-control" formControlName="current" id="current" required="true">
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm  btn-secondary" (click)="modal.dismiss()">Close</button>
+                <button type="submit" class="btn btn-sm  btn-primary">Save</button>
+            </div>
+        </form>
+
+    </div>
+
+ 
 </ng-template>
 
 

@@ -8,18 +8,20 @@ import { ElectricCompanyComponent } from './components/electric-company/electric
 import { EmployeesComponent } from './components/employees/employees.component';
 import { ExchangeComponent } from './components/exchange/exchange.component';
 import { HomeComponent } from './components/home/home.component';
+import { ManufacturerComponent } from './components/manufacturer/manufacturer.component';
 import { NetworkElementComponent } from './components/network-element/network-element.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { PssOwnerComponent } from './components/pss-owner/pss-owner.component';
 import { SigninComponent } from './components/signin/signin.component';
 import { SiteCategoryComponent } from './components/site-category/site-category.component';
 import { SiteComponent } from './components/site/site.component';
+import { AcPanelComponent } from './components/support-facilities/ac-panel/ac-panel.component';
 import { BatteryComponent } from './components/support-facilities/battery/battery.component';
+import { DcPanelComponent } from './components/support-facilities/dc-panel/dc-panel.component';
 import { RectifierComponent } from './components/support-facilities/rectifier/rectifier.component';
 import { SvComponent } from './components/sv/sv.component';
 import { TrainingComponent } from './components/training/training.component';
 import { TteComponent } from './components/tte/tte.component';
-
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -37,11 +39,13 @@ const routes: Routes = [
   { path: 'electric-company', component: ElectricCompanyComponent },
   { path: 'site-category', component: SiteCategoryComponent },
   { path: 'pss-owner', component: PssOwnerComponent },
+  { path: 'manufacturer', component: ManufacturerComponent },
   { path: 'network-element', component: NetworkElementComponent },
   { path: 'support-facility/battery', component: BatteryComponent },
   { path: 'support-facility/rectifier', component: RectifierComponent },
+  { path: 'support-facility/dc-panel', component: DcPanelComponent },
+  { path: 'support-facility/ac-panel', component: AcPanelComponent },
   { path: 'audit', component: AuditsComponent },
-  
   
 //   testing
   { path: 'datatables', component: DatatablesComponent },

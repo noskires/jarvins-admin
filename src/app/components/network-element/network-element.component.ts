@@ -53,6 +53,7 @@ export class NetworkElementComponent implements OnInit {
   status: any[]= [];
   
   neRaw!: any;
+  neData!: any;
 
   neForm!: FormGroup;
   
@@ -60,6 +61,8 @@ export class NetworkElementComponent implements OnInit {
   
   params!: any;
   select2Params!: any;
+
+  filtersLoaded!: Promise<boolean>;
 
   constructor(
 
@@ -243,84 +246,90 @@ export class NetworkElementComponent implements OnInit {
     console.log(ne)
     this.neRaw = ne;
 
+    this.networkElementService.list2({ne_id:ne.id}).subscribe(async resp => {
+      this.neData = await resp.network_element;
+      console.log(this.neData)
+      this.filtersLoaded = Promise.resolve(true);
+    });
+
     // this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => { dtInstance.clear(); });
 
-    this.dtOptionsRectifier = {
-      destroy: true,
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      serverSide: true,
-      processing: true,
-      // stateSave: true,
-      responsive: true,
-      // scrollX: true,
-      ajax: (dataTablesParameters: any, callback) => {
+    // this.dtOptionsRectifier = {
+    //   destroy: true,
+    //   pagingType: 'full_numbers',
+    //   pageLength: 10,
+    //   serverSide: true,
+    //   processing: true,
+    //   // stateSave: true,
+    //   responsive: true,
+    //   // scrollX: true,
+    //   ajax: (dataTablesParameters: any, callback) => {
 
-        dataTablesParameters['network_element_code'] = ne.code;
-        dataTablesParameters['item_type'] = "Network Element";
-        console.log(dataTablesParameters)
+    //     dataTablesParameters['network_element_code'] = ne.code;
+    //     dataTablesParameters['item_type'] = "Network Element";
+    //     console.log(dataTablesParameters)
 
-        this.rectifierItemService.list(dataTablesParameters).subscribe(resp => {
-          this.rectifier = resp.data;
-          console.log(resp)
+    //     this.rectifierItemService.list(dataTablesParameters).subscribe(resp => {
+    //       this.rectifier = resp.data;
+    //       console.log(resp)
 
-          callback({
-            recordsTotal: resp.recordsTotal,
-            recordsFiltered: resp.recordsFiltered,
-            data: []
-          });
+    //       callback({
+    //         recordsTotal: resp.recordsTotal,
+    //         recordsFiltered: resp.recordsFiltered,
+    //         data: []
+    //       });
 
-        });
-      },
-      columns: [ 
-        { data: 'rectifier_manufacturer', width: '10%'}, 
-        { data: 'rectifier_index_no', width: '10%'}, 
-        { data: 'rectifier_model', width: '10%'}, 
-        { data: 'rectifier_maintainer', width: '10%'}, 
-        { data: 'rectifier_status', width: '10%'}, 
-        { data: 'rectifier_date_installed', width: '10%'}, 
-        { data: 'rectifier_date_accepted', width: '10%'}, 
-      ],
+    //     });
+    //   },
+    //   columns: [ 
+    //     { data: 'rectifier_manufacturer', width: '10%'}, 
+    //     { data: 'rectifier_index_no', width: '10%'}, 
+    //     { data: 'rectifier_model', width: '10%'}, 
+    //     { data: 'rectifier_maintainer', width: '10%'}, 
+    //     { data: 'rectifier_status', width: '10%'}, 
+    //     { data: 'rectifier_date_installed', width: '10%'}, 
+    //     { data: 'rectifier_date_accepted', width: '10%'}, 
+    //   ],
 
-    };
+    // };
 
 
 
-    this.dtOptionsBattery = {
-      destroy: true,
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      serverSide: true,
-      processing: true,
-      scrollX: true,
-      ajax: (dataTablesParameters: any, callback) => {
+    // this.dtOptionsBattery = {
+    //   destroy: true,
+    //   pagingType: 'full_numbers',
+    //   pageLength: 10,
+    //   serverSide: true,
+    //   processing: true,
+    //   scrollX: true,
+    //   ajax: (dataTablesParameters: any, callback) => {
        
-        console.log(dataTablesParameters)
-        dataTablesParameters['network_element_code'] = ne.code;
-        dataTablesParameters['item_type'] = "Battery";
-        this.rectifierItemService.list(dataTablesParameters).subscribe(resp => {
-          this.battery = resp.data;
-          console.log(resp)
+    //     console.log(dataTablesParameters)
+    //     dataTablesParameters['network_element_code'] = ne.code;
+    //     dataTablesParameters['item_type'] = "Battery";
+    //     this.rectifierItemService.list(dataTablesParameters).subscribe(resp => {
+    //       this.battery = resp.data;
+    //       console.log(resp)
 
-          callback({
-            recordsTotal: resp.recordsTotal,
-            recordsFiltered: resp.recordsFiltered,
-            data: []
-          });
-        });
+    //       callback({
+    //         recordsTotal: resp.recordsTotal,
+    //         recordsFiltered: resp.recordsFiltered,
+    //         data: []
+    //       });
+    //     });
 
-      },
-      columns: [
-        { data: 'rectifier_manufacturer', width: '10%'}, 
-        { data: 'battery_manufacturer', width: '10%'}, 
-        { data: 'battery_index_no', width: '10%'}, 
-        { data: 'battery_model', width: '10%'}, 
-        { data: 'battery_maintainer', width: '10%'}, 
-        { data: 'battery_status', width: '10%'}, 
-        { data: 'battery_date_installed', width: '10%'}, 
-        { data: 'battery_date_accepted', width: '10%'}, 
-      ]
-    };
+    //   },
+    //   columns: [
+    //     { data: 'rectifier_manufacturer', width: '10%'}, 
+    //     { data: 'battery_manufacturer', width: '10%'}, 
+    //     { data: 'battery_index_no', width: '10%'}, 
+    //     { data: 'battery_model', width: '10%'}, 
+    //     { data: 'battery_maintainer', width: '10%'}, 
+    //     { data: 'battery_status', width: '10%'}, 
+    //     { data: 'battery_date_installed', width: '10%'}, 
+    //     { data: 'battery_date_accepted', width: '10%'}, 
+    //   ]
+    // };
 
     // $('#dt1').DataTable().ajax.reload();
 

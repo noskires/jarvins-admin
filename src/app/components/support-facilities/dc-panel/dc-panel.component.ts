@@ -5,12 +5,12 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DataTableDirective,  } from 'angular-datatables';
 import { Router, ActivatedRoute } from '@angular/router';
-import { EmployeesService } from '../../employees/employees.service';
 import { TokenService } from 'src/app/shared/token.service';
-import { BatteryService } from './battery.service';
-import { SiteService } from '../../site/site.service';
 import { Select2OptionData } from 'ng-select2';
 import Swal from 'sweetalert2';
+import { DcPanelService } from './dc-panel.service';
+import { DcPanelItemService } from './dc-panel-item.service';
+import { RectifierService } from '../rectifier/rectifier.service';
 import { environment } from '../../../../environments/environment';
 
 declare let $: any;
@@ -23,36 +23,42 @@ export interface Options {
   ajax: object,
   placeholder: string,
   language: object,
- 
 }
 
 @Component({
-  selector: 'app-battery',
-  templateUrl: './battery.component.html',
-  styleUrls: ['./battery.component.css']
+  selector: 'app-dc-panel',
+  templateUrl: './dc-panel.component.html',
+  styleUrls: ['./dc-panel.component.css']
 })
-export class BatteryComponent implements OnInit {
+export class DcPanelComponent implements OnInit {
+  public defaultValue!: Array<Select2OptionData>;
 
   @ViewChild(DataTableDirective, {static: false})
 
   dtElement!: DataTableDirective;
 
   dtOptions: DataTables.Settings = {};
-  battery: any[]= [];
+  dtOptionsDcPanelItems: DataTables.Settings = {};
+  dcPanel: any[]= [];
+  dcPanelItems: any[]= [];
   status: any[]= [];
   
-  batteryForm!: FormGroup;
+  dcPanelForm!: FormGroup;
+  dcPanelItemForm!: FormGroup;
+
+  editDcPanelItemModal!: any
 
   public options!: Options;
   public optionsNe!: Options;
-  public optionsSite!: Options;
-  public optionsManufacturer!: Options;
   public optionsRectifier!: Options;
+  public optionsManufacturer!: Options;
 
+  
   defaultNe!: any;
-  defaultSite!: any;
-  defaultManufacturer!: any;
   defaultRectifier!: any;
+  defaultManufacturer!: any;
+  value1!: any;
+  title!: any;
   
   params!: any;
   select2Params!: any;
@@ -64,9 +70,9 @@ export class BatteryComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
-    public batteryService: BatteryService,
-    public siteService: SiteService,
-    public employeeService: EmployeesService,
+    public dcPanelService: DcPanelService,
+    public dcPanelItemService: DcPanelItemService,
+    public rectifierService: RectifierService,
     public tokenService: TokenService
   ) { }
 
@@ -82,8 +88,8 @@ export class BatteryComponent implements OnInit {
       ajax: (dataTablesParameters: any, callback) => {
        
         console.log(dataTablesParameters)
-        this.batteryService.list(dataTablesParameters).subscribe(resp => {
-          this.battery = resp.data;
+        this.dcPanelService.list(dataTablesParameters).subscribe(async resp => {
+          this.dcPanel = await resp.data;
           console.log(resp)
 
           callback({
@@ -97,7 +103,7 @@ export class BatteryComponent implements OnInit {
       columns: [
         { data: 'site_name' },
         { data: 'rectifier_name' },
-        { data: 'battery_manufacturer_name' },
+        { data: 'manufacturer_name' },
         { data: 'index_no' },
         { data: 'model' },
         { data: 'maintainer' },
@@ -108,50 +114,27 @@ export class BatteryComponent implements OnInit {
       ]
     };
 
-    this.batteryForm = this.fb.group({
+    this.dcPanelForm = this.fb.group({
       id: ['', Validators.required],
       code: ['', Validators.required],
-      site_id: ['', Validators.required],
-      network_element_code: ['', Validators.required],
-      manufacturer: ['', Validators.required],
       rectifier: ['', Validators.required],
+      manufacturer: ['', Validators.required],
       index_no: ['', Validators.required],
       model: ['', Validators.required],
       maintainer: ['', Validators.required],
       status: ['', Validators.required],
       date_installed: ['', Validators.required],
       date_accepted: ['', Validators.required],
-      capacity: ['', Validators.required],
-      type: ['', Validators.required],
-      brand: ['', Validators.required],
-      no_of_cells: ['', Validators.required],
-      individual_cell_voltage: ['', Validators.required],
-      cell_status: ['', Validators.required],
-      cable_size: ['', Validators.required],
-      backup_time: ['', Validators.required],
-      float_voltage_requirement: ['', Validators.required],
+      fuse_breaker_number: ['', Validators.required],
+      fuse_breaker_rating: ['', Validators.required],
+      feed_source: ['', Validators.required],
+      no_of_runs_and_cable_size: ['', Validators.required],
+      source_voltage: ['', Validators.required],
+      source_electric_current: ['', Validators.required],
+      status_of_breakers: ['', Validators.required],
       remarks: ['', Validators.required],
     });
 
-  }
-
-  onChangeIndividualCellVoltage($event: any) {
-
-    let individual_cell_voltage = this.batteryForm.get("individual_cell_voltage")?.value;
-    let no_of_cells = 0;
-
-    if(individual_cell_voltage == 48){
-      no_of_cells = 1;
-    }else if(individual_cell_voltage=12){
-      no_of_cells = 4;
-    }else if(individual_cell_voltage=2){
-      no_of_cells = 24;
-    }else{
-      no_of_cells = 0;
-    }
-
-    this.batteryForm.controls['no_of_cells'].setValue(no_of_cells);
- 
   }
 
   add(targetModal:any) {
@@ -164,33 +147,7 @@ export class BatteryComponent implements OnInit {
       size: 'xl',
     });
 
-    this.batteryForm = this.fb.group({
-      id: [''],
-      code: [''],
-      site_id: [''],
-      network_element_code: [''],
-      manufacturer: [''],
-      rectifier: [''],
-      index_no: [''],
-      model: [''],
-      maintainer: [''],
-      status: [''],
-      date_installed: [''],
-      date_accepted: [''],
-      capacity: [''],
-      type: [''],
-      brand: [''],
-      no_of_cells: [''],
-      individual_cell_voltage: null,
-      cell_status: [''],
-      cable_size: [''],
-      backup_time: [''],
-      float_voltage_requirement: [''],
-      remarks: [''],
-
-    });
-
-    this.optionsNe = {
+    this.optionsRectifier = {
       theme: "bootstrap",
       multiple: false,
       closeOnSelect: true,
@@ -200,7 +157,7 @@ export class BatteryComponent implements OnInit {
           "Authorization" : "Bearer "+this.tokenService.getToken(),
           "Content-Type" : "application/json",
         },
-        url: environment.API_URL+"api/v1/ne/select2",
+        url: environment.API_URL+"api/v1/rectifier/select2",
         data: function (params:any) {
 
           console.log(params)
@@ -216,41 +173,7 @@ export class BatteryComponent implements OnInit {
         delay: 100,
         cache: true
       },
-      placeholder: 'Search NE',
-      language: {
-          noResults: function () {
-              return "No records found!";
-          }
-      },
-    };
-
-    this.optionsSite = {
-      theme: "bootstrap",
-      multiple: false,
-      closeOnSelect: true,
-      width: '100%',
-      ajax: {
-        headers: {
-          "Authorization" : "Bearer "+this.tokenService.getToken(),
-          "Content-Type" : "application/json",
-        },
-        url: environment.API_URL+"api/v1/site/select2",
-        data: function (params:any) {
-
-          console.log(params)
-          var query = {
-            search: params.term,
-          }
-          // Query parameters will be ?search=[term]&type=public
-          console.log(query)
-          return query;
-        },
-        type: "get",
-        dataType: 'json',
-        delay: 100,
-        cache: true
-      },
-      placeholder: 'Search Site',
+      placeholder: 'Search Rectifier',
       language: {
           noResults: function () {
               return "No records found!";
@@ -292,39 +215,27 @@ export class BatteryComponent implements OnInit {
       },
     };
 
-    this.optionsRectifier = {
-      theme: "bootstrap",
-      multiple: false,
-      closeOnSelect: true,
-      width: '100%',
-      ajax: {
-        headers: {
-          "Authorization" : "Bearer "+this.tokenService.getToken(),
-          "Content-Type" : "application/json",
-        },
-        url: environment.API_URL+"api/v1/rectifier/select2",
-        data: function (params:any) {
+    this.dcPanelForm = this.fb.group({
+      id: [''],
+      code: [''],
+      rectifier: [''],
+      manufacturer: [''],
+      index_no: [''],
+      model: [''],
+      maintainer: [''],
+      status: [''],
+      date_installed: [''],
+      date_accepted: [''],
+      fuse_breaker_number: [''],
+      fuse_breaker_rating: [''],
+      feed_source: [''],
+      no_of_runs_and_cable_size: [''],
+      source_voltage: [''],
+      source_electric_current: [''],
+      status_of_breakers: [''],
+      remarks: [''],
 
-          console.log(params)
-          var query = {
-            search: params.term,
-          }
-          // Query parameters will be ?search=[term]&type=public
-          console.log(query)
-          return query;
-        },
-        type: "get",
-        dataType: 'json',
-        delay: 100,
-        cache: true
-      },
-      placeholder: 'Search Rectifier',
-      language: {
-          noResults: function () {
-              return "No records found!";
-          }
-      },
-    };
+    });
 
   }
 
@@ -339,151 +250,11 @@ export class BatteryComponent implements OnInit {
       keyboard: true,
       size: 'xl',
     });
-  
-    this.batteryForm.patchValue({
-      id: raw.id,
-      code: raw.code,
-      site_id: raw.site_id,
-      manufacturer: raw.battery_manufacturer_id,
-      rectifier: raw.rectifier_id,
-      index_no: raw.index_no,
-      model: raw.model,
-      maintainer: raw.maintainer,
-      status: raw.status,
-      date_installed: raw.date_installed,
-      date_accepted: raw.date_accepted,
-      capacity: raw.capacity,
-      type: raw.type,
-      brand: raw.brand,
-      no_of_cells: raw.no_of_cells,
-      cell_status: raw.cell_status,
-      cable_size: raw.cable_size,
-      backup_time: raw.backup_time,
-      float_voltage_requirement: raw.float_voltage_requirement,
-      remarks: raw.remarks,
 
-    });
- 
-    // this.optionsNe = {
-    //   theme: "bootstrap",
-    //   multiple: false,
-    //   closeOnSelect: true,
-    //   width: '100%',
-    //   ajax: {
-    //     headers: {
-    //       "Authorization" : "Bearer "+this.tokenService.getToken(),
-    //       "Content-Type" : "application/json",
-    //     },
-    //     url: environment.API_URL+"api/v1/ne/select2",
-    //     data: function (params:any) {
-
-    //       console.log(params)
-    //       var query = {
-    //         search: params.term,
-    //       }
-    //       // Query parameters will be ?search=[term]&type=public
-    //       console.log(query)
-    //       return query;
-    //     },
-    //     type: "get",
-    //     dataType: 'json',
-    //     delay: 100,
-    //     cache: true
-    //   },
-    //   placeholder: 'Search NE',
-    //   language: {
-    //       noResults: function () {
-    //           return "No records found!";
-    //       }
-    //   },
-    // };
-
-    // this.defaultNe = [
-    //   {
-    //     id: raw.network_element_code,
-    //     text: raw.network_element_name
-    //   }
-    // ];
-
-    this.optionsSite = {
-      theme: "bootstrap",
-      multiple: false,
-      closeOnSelect: true,
-      width: '100%',
-      ajax: {
-        headers: {
-          "Authorization" : "Bearer "+this.tokenService.getToken(),
-          "Content-Type" : "application/json",
-        },
-        url: environment.API_URL+"api/v1/site/select2",
-        data: function (params:any) {
-
-          console.log(params)
-          var query = {
-            search: params.term,
-          }
-          // Query parameters will be ?search=[term]&type=public
-          console.log(query)
-          return query;
-        },
-        type: "get",
-        dataType: 'json',
-        delay: 100,
-        cache: true
-      },
-      placeholder: 'Search Site',
-      language: {
-          noResults: function () {
-              return "No records found!";
-          }
-      },
-    };
-
-    this.defaultSite = [
+    this.defaultRectifier = [
       {
-        id: raw.site_id,
-        text: raw.site_name
-      }
-    ];
-
-    this.optionsManufacturer = {
-      theme: "bootstrap",
-      multiple: false,
-      closeOnSelect: true,
-      width: '100%',
-      ajax: {
-        headers: {
-          "Authorization" : "Bearer "+this.tokenService.getToken(),
-          "Content-Type" : "application/json",
-        },
-        url: environment.API_URL+"api/v1/manufacturer/select2",
-        data: function (params:any) {
-
-          console.log(params)
-          var query = {
-            search: params.term,
-          }
-          // Query parameters will be ?search=[term]&type=public
-          console.log(query)
-          return query;
-        },
-        type: "get",
-        dataType: 'json',
-        delay: 100,
-        cache: true
-      },
-      placeholder: 'Search Manufacturer',
-      language: {
-          noResults: function () {
-              return "No records found!";
-          }
-      },
-    };
-
-    this.defaultManufacturer = [
-      {
-        id: raw.battery_manufacturer_id,
-        text: raw.battery_manufacturer_name
+        id: raw.rectifier_id,
+        text: raw.rectifier_name
       }
     ];
 
@@ -521,12 +292,69 @@ export class BatteryComponent implements OnInit {
       },
     };
 
-    this.defaultRectifier = [
+    this.defaultManufacturer = [
       {
-        id: raw.rectifier_id,
-        text: raw.rectifier_name
+        id: raw.manufacturer_id,
+        text: raw.manufacturer_name
       }
     ];
+
+    this.optionsManufacturer = {
+      theme: "bootstrap",
+      multiple: false,
+      closeOnSelect: true,
+      width: '100%',
+      ajax: {
+        headers: {
+          "Authorization" : "Bearer "+this.tokenService.getToken(),
+          "Content-Type" : "application/json",
+        },
+        url: environment.API_URL+"api/v1/manufacturer/select2",
+        data: function (params:any) {
+
+          console.log(params)
+          var query = {
+            search: params.term,
+          }
+          // Query parameters will be ?search=[term]&type=public
+          console.log(query)
+          return query;
+        },
+        type: "get",
+        dataType: 'json',
+        delay: 100,
+        cache: true
+      },
+      placeholder: 'Search Manufacturer',
+      language: {
+          noResults: function () {
+              return "No records found!";
+          }
+      },
+    };
+  
+    this.dcPanelForm.patchValue({
+      id: raw.id,
+      code: raw.code,
+      rectifier: raw.rectifier_id,
+      manufacturer: raw.manufacturer_id,
+      index_no: raw.index_no,
+      model: raw.model,
+      maintainer: raw.maintainer,
+      status: raw.status,
+      date_installed: raw.date_installed,
+      date_accepted: raw.date_accepted,
+      fuse_breaker_number: raw.fuse_breaker_number,
+      fuse_breaker_rating: raw.fuse_breaker_rating,
+      feed_source: raw.feed_source,
+      no_of_runs_and_cable_size: raw.no_of_runs_and_cable_size,
+      source_voltage: raw.source_voltage,
+      source_electric_current: raw.source_electric_current,
+      status_of_breakers: raw.status_of_breakers,
+      remarks: raw.remarks,
+
+    });
+ 
 
   }
 
@@ -543,7 +371,7 @@ export class BatteryComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        this.batteryService.delete(raw).subscribe((data: any) => {
+        this.dcPanelService.delete(raw).subscribe((data: any) => {
 
           this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
             dtInstance.draw();
@@ -563,12 +391,213 @@ export class BatteryComponent implements OnInit {
     })
   }
 
-  async onSubmitSave(): Promise<any> {
-    
-    const raw = this.batteryForm.getRawValue();
+  view(targetModal:any, raw:any) {
+
     console.log(raw)
 
-    await this.batteryService.save(raw).subscribe((data: any) => {
+    this.title = raw.dc_panel_name;
+
+    this.modalService.open(targetModal, {
+      centered: true,
+      backdrop: 'static',
+      fullscreen: true,
+      keyboard: true,
+      size: 'xl',
+    });
+
+    this.dcPanelItemForm = this.fb.group({
+      network_element_id: [''],
+      breaker_no: [''],
+      current: [''],
+
+    });
+
+    this.optionsNe = {
+      theme: "bootstrap",
+      multiple: false,
+      closeOnSelect: true,
+      width: '100%',
+      ajax: {
+        headers: {
+          "Authorization" : "Bearer "+this.tokenService.getToken(),
+          "Content-Type" : "application/json",
+        },
+        url: environment.API_URL+"api/v1/ne/select2",
+        data: function (params:any) {
+
+          params['dc_panel_id'] = raw.id;
+          console.log(params)
+          var query = {
+            search: params.term,
+            dc_panel_id: params.dc_panel_id
+          }
+ 
+          // Query parameters will be ?search=[term]&type=public
+          console.log(query)
+          return query;
+        },
+        type: "get",
+        dataType: 'json',
+        delay: 100,
+        cache: true
+      },
+      placeholder: 'Search NE',
+      language: {
+          noResults: function () {
+              return "No records found!";
+          }
+      },
+    };
+
+    // dtables
+    this.dtOptionsDcPanelItems = {
+      destroy: true,
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      serverSide: true,
+      processing: true,
+      stateSave: true,
+      scrollX: true,
+      ajax: (dataTablesParameters: any, callback) => {
+       
+        dataTablesParameters['dc_panel_id'] = raw.id;
+        console.log(dataTablesParameters)
+        this.dcPanelItems = [];
+        this.dcPanelItemService.list(dataTablesParameters).subscribe(async resp => {
+          this.dcPanelItems = await resp.data;
+          console.log(resp)
+
+          callback({
+            recordsTotal: resp.recordsTotal,
+            recordsFiltered: resp.recordsFiltered,
+            data: []
+          });
+
+        });
+      },
+      columns: [
+        // { data: 'code', width:'6%'}, 
+        { data: 'ne_name', width: '20%'}, 
+        { data: 'breaker_no', width: '30%'}, 
+        { data: 'current', width: '14%'}, 
+        { data: null, title: 'Actions', width: '5%', orderable:false},      
+      ],
+
+    };
+
+    this.dcPanelItemForm = this.fb.group({
+      id: [''],
+      dc_panel_id: raw.id,
+      network_element_id: [''],
+      breaker_no: [''],
+      current: [''],
+    });
+
+  }
+
+  editDcPanelItem(targetModal:any, raw:any) {
+  
+    console.log(raw)
+
+    this.editDcPanelItemModal = this.modalService.open(targetModal, {
+      centered: true,
+      backdrop: 'static',
+      fullscreen: true,
+      keyboard: true,
+      size: 'xl',
+    });
+
+    this.defaultNe = [
+      {
+        id: raw.ne_id,
+        text: raw.ne_name
+      }
+    ];
+
+    console.log(this.defaultNe)
+
+    this.optionsNe = {
+      theme: "bootstrap",
+      multiple: false,
+      closeOnSelect: true,
+      width: '100%',
+      ajax: {
+        headers: {
+          "Authorization" : "Bearer "+this.tokenService.getToken(),
+          "Content-Type" : "application/json",
+        },
+        url: environment.API_URL+"api/v1/ne/select2",
+        data: function (params:any) {
+
+          params['dc_panel_id'] = raw.dc_panel_id;
+          console.log(params)
+          var query = {
+            search: params.term,
+            dc_panel_id: params.dc_panel_id
+          }
+          // Query parameters will be ?search=[term]&type=public
+          console.log(query)
+          return query;
+        },
+        type: "get",
+        dataType: 'json',
+        delay: 100,
+        cache: true
+      },
+      placeholder: 'Search NE',
+      language: {
+          noResults: function () {
+              return "No records found!";
+          }
+      },
+    };
+
+    this.dcPanelItemForm.patchValue({
+      id: raw.id,
+      code: raw.code,
+      dc_panel_id: raw.dc_panel_id,
+      network_element_id: raw.ne_id,
+      breaker_no: raw.breaker_no,
+      current: raw.current,
+    });
+
+  }
+
+  removeDcPanelItem(raw: any) {
+    
+    Swal.fire({
+      title: 'Are you sure you want to delete this record?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        this.dcPanelItemService.delete(raw).subscribe((data: any) => {
+
+          $('#dt1').DataTable().ajax.reload();
+
+          Swal.fire(
+            'Deleted!',
+            'This record has been deleted.',
+            'success'
+          )
+
+        });
+
+      }
+    })
+  }
+
+  async onSubmitSave(): Promise<any> {
+    
+    const raw = this.dcPanelForm.getRawValue();
+    console.log(raw)
+
+    await this.dcPanelService.save(raw).subscribe((data: any) => {
 
       console.log(data)
       this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
@@ -591,10 +620,10 @@ export class BatteryComponent implements OnInit {
 
   async onSubmitUpdate(): Promise<any> {
     
-    const raw = this.batteryForm.getRawValue();
+    const raw = this.dcPanelForm.getRawValue();
     console.log(raw)
 
-    await this.batteryService.update(raw).subscribe((data: any) => {
+    await this.dcPanelService.update(raw).subscribe((data: any) => {
 
       console.log(data)
       this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
@@ -611,6 +640,70 @@ export class BatteryComponent implements OnInit {
 
       this.modalService.dismissAll();
 
+    });
+
+  }
+
+  async onSubmitDcPanelItem(): Promise<any> {
+    
+    const raw = this.dcPanelItemForm.getRawValue();
+    console.log(raw)
+
+    await this.dcPanelItemService.save(raw).subscribe((data: any) => {
+
+      console.log(data)
+      $('#dt1').DataTable().ajax.reload();
+
+      Swal.fire({
+        // position: 'top-end',
+        icon: 'success',
+        title: 'Successfully save!',
+        showConfirmButton: false,
+        timer: 1500
+      })
+
+      this.dcPanelItemForm = this.fb.group({
+        id: [''],
+        dc_panel_code: raw.dc_panel_code,
+        code: [''],
+        network_element_id: [''],
+        breaker_no: [''],
+        current: [''],
+      });
+      
+    });
+
+  }
+
+  async onUpdateDcPanelItem(): Promise<any> {
+    
+    const raw = this.dcPanelItemForm.getRawValue();
+    console.log(raw)
+
+    await this.dcPanelItemService.update(raw).subscribe((data: any) => {
+
+      console.log(data)
+      $('#dt1').DataTable().ajax.reload();
+
+      Swal.fire({
+        // position: 'top-end',
+        icon: 'success',
+        title: 'Successfully save!',
+        showConfirmButton: false,
+        timer: 1500
+      })
+
+      this.dcPanelItemForm = this.fb.group({
+        id: [''],
+        dc_panel_id: raw.dc_panel_id,
+        code: [''],
+        network_element_id: [''],
+        breaker_no: [''],
+        current: [''],
+      });
+
+      this.editDcPanelItemModal.dismiss();
+      
     });
 
   }

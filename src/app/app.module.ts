@@ -35,6 +35,9 @@ import { NetworkElementComponent } from './components/network-element/network-el
 import { BatteryComponent } from './components/support-facilities/battery/battery.component';
 import { RectifierComponent } from './components/support-facilities/rectifier/rectifier.component';
 import { AuditsComponent } from './components/audits/audits.component';
+import { AcPanelComponent } from './components/support-facilities/ac-panel/ac-panel.component';
+import { DcPanelComponent } from './components/support-facilities/dc-panel/dc-panel.component';
+import { ManufacturerComponent } from './components/manufacturer/manufacturer.component';
 
 
 
@@ -63,7 +66,10 @@ import { AuditsComponent } from './components/audits/audits.component';
     NetworkElementComponent,
     BatteryComponent,
     RectifierComponent,
-    AuditsComponent
+    AuditsComponent,
+    AcPanelComponent,
+    DcPanelComponent,
+    ManufacturerComponent,
   ],
   imports: [
     BrowserModule,

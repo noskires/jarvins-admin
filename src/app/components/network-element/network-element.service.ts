@@ -14,6 +14,10 @@ export class NetworkElementService {
     return this.http.post(environment.API_URL+'api/v1/ne/list', params);
   }
 
+  list2(params: any): Observable<any> {
+    return this.http.post(environment.API_URL+'api/v2/ne/list', params);
+  }
+
   save(params: any): Observable<any> {
     return this.http.post(environment.API_URL+'api/v1/ne/save', params);
   }
