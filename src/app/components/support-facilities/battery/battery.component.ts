@@ -343,7 +343,7 @@ export class BatteryComponent implements OnInit {
     this.batteryForm.patchValue({
       id: raw.id,
       code: raw.code,
-      site_id: raw.site_id,
+      site_id: raw.battery_site_id,
       manufacturer: raw.battery_manufacturer_id,
       rectifier: raw.rectifier_id,
       index_no: raw.index_no,
@@ -364,47 +364,6 @@ export class BatteryComponent implements OnInit {
 
     });
  
-    // this.optionsNe = {
-    //   theme: "bootstrap",
-    //   multiple: false,
-    //   closeOnSelect: true,
-    //   width: '100%',
-    //   ajax: {
-    //     headers: {
-    //       "Authorization" : "Bearer "+this.tokenService.getToken(),
-    //       "Content-Type" : "application/json",
-    //     },
-    //     url: environment.API_URL+"api/v1/ne/select2",
-    //     data: function (params:any) {
-
-    //       console.log(params)
-    //       var query = {
-    //         search: params.term,
-    //       }
-    //       // Query parameters will be ?search=[term]&type=public
-    //       console.log(query)
-    //       return query;
-    //     },
-    //     type: "get",
-    //     dataType: 'json',
-    //     delay: 100,
-    //     cache: true
-    //   },
-    //   placeholder: 'Search NE',
-    //   language: {
-    //       noResults: function () {
-    //           return "No records found!";
-    //       }
-    //   },
-    // };
-
-    // this.defaultNe = [
-    //   {
-    //     id: raw.network_element_code,
-    //     text: raw.network_element_name
-    //   }
-    // ];
-
     this.optionsSite = {
       theme: "bootstrap",
       multiple: false,
@@ -439,13 +398,15 @@ export class BatteryComponent implements OnInit {
       },
     };
 
-    this.defaultSite = [
-      {
-        id: raw.site_id,
-        text: raw.site_name
-      }
-    ];
-
+    if(raw.battery_site_id){
+      this.defaultSite = [
+        {
+          id: raw.battery_site_id,
+          text: raw.site_name
+        }
+      ];
+    }
+    
     this.optionsManufacturer = {
       theme: "bootstrap",
       multiple: false,

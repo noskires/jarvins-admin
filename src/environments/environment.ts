@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  API_URL: 'http://localhost/laravel-jwt-auth/backend/'
+  API_URL: 'http://localhost/laravel-jwt-auth/backend/',
+  BASE_URL: '/'
 };
 
 /*

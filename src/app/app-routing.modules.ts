@@ -22,9 +22,15 @@ import { RectifierComponent } from './components/support-facilities/rectifier/re
 import { SvComponent } from './components/sv/sv.component';
 import { TrainingComponent } from './components/training/training.component';
 import { TteComponent } from './components/tte/tte.component';
+import { environment } from 'src/environments/environment';
+import { SvgComponent } from './components/svg/svg.component';
+import { NgxPermissionsGuard } from 'ngx-permissions';
+
+// environment.API_URL+
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: SigninComponent },
   { path: 'profile', component: ProfileComponent },
@@ -50,6 +56,16 @@ const routes: Routes = [
 //   testing
   { path: 'datatables', component: DatatablesComponent },
   { path: 'apexcharts', component: ApexchartsComponent },
+  { path: 'svg', component: SvgComponent, 
+    canActivate: [NgxPermissionsGuard], 
+    data: {
+      permissions: {
+        only: 'DEVELOPER1',
+        redirectTo: '/home'
+      }
+    }
+
+  },
 
 ];
 

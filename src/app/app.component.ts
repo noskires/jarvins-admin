@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { HelperService } from './helper.service';
+import { NgxPermissionsService } from 'ngx-permissions';
+// import { NgxPermissionsService } from 'ngx-permissions/lib';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +10,16 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'admin';
+
+  constructor(
+    public helper: HelperService,
+    private ngxPermissionsService: NgxPermissionsService
+  ) {
+
+    this.helper.testHelper();
+    this.ngxPermissionsService.loadPermissions(['DEVELOPER']);
+
+  }
 
   
 }

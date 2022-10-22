@@ -117,6 +117,14 @@
         <form [formGroup]="dcPanelForm" (ngSubmit)="onSubmitSave()">
 
             <div class="row">
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Site</label><br>
+                        <ng-select2 style="width: 100%" formControlName="site_id" [data]="defaultSite" [options]="optionsSite" >
+                        </ng-select2>
+                    </div>
+                </div>
             
                 <div class="col-md-3">
                     <div class="form-group">
@@ -257,6 +265,14 @@
         <form [formGroup]="dcPanelForm" (ngSubmit)="onSubmitUpdate()">
 
             <div class="row">
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Site</label><br>
+                        <ng-select2 style="width: 100%" formControlName="site_id" [data]="defaultSite" [options]="optionsSite" >
+                        </ng-select2>
+                    </div>
+                </div>
 
                 <div class="col-md-3">
                     <div class="form-group">

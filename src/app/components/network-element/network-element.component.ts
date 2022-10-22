@@ -12,7 +12,7 @@ import { Select2OptionData } from 'ng-select2';
 import { RectifierService } from '../support-facilities/rectifier/rectifier.service';
 import { RectifierItemService } from '../support-facilities/rectifier/rectifier-item.service';
 import { BatteryService } from '../support-facilities/battery/battery.service';
-import { TrainingHistoryService } from '../training/training-history.service';
+import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2'
 
 declare let $: any;
@@ -24,10 +24,11 @@ export interface Options {
   closeOnSelect: boolean,
   ajax: object,
   placeholder: string,
-  value: string,
   language: object,
  
 }
+
+
 
 @Component({
   selector: 'app-network-element',
@@ -45,6 +46,7 @@ export class NetworkElementComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   dtOptionsRectifier: DataTables.Settings = {};
   dtOptionsBattery: DataTables.Settings = {};
+  
 
   
   ne: any[]= [];
@@ -58,7 +60,9 @@ export class NetworkElementComponent implements OnInit {
   neForm!: FormGroup;
   
   public options!: Options;
-  
+  public optionsSite!: Options;
+
+  defaultSite!: any;
   params!: any;
   select2Params!: any;
 
@@ -78,7 +82,6 @@ export class NetworkElementComponent implements OnInit {
     public rectifierService: RectifierService,
     public rectifierItemService: RectifierItemService,
     public batteryService: BatteryService,
-    public trainingHistoryService: TrainingHistoryService
 
   ) { }
 
@@ -120,6 +123,7 @@ export class NetworkElementComponent implements OnInit {
 
     this.neForm = this.fb.group({
       id: ['', Validators.required],
+      site_id: ['', Validators.required],
       code: ['', Validators.required],
       name: ['', Validators.required],
       type: ['', Validators.required],
@@ -149,6 +153,7 @@ export class NetworkElementComponent implements OnInit {
 
     this.neForm = this.fb.group({
       id: [''],
+      site_id: [''],
       code: [''],
       name: [''],
       type: [''],
@@ -164,6 +169,40 @@ export class NetworkElementComponent implements OnInit {
       new_node_name: [''],
 
     });
+
+    this.optionsSite = {
+      theme: "bootstrap",
+      multiple: false,
+      closeOnSelect: true,
+      width: '100%',
+      ajax: {
+        headers: {
+          "Authorization" : "Bearer "+this.tokenService.getToken(),
+          "Content-Type" : "application/json",
+        },
+        url: environment.API_URL+"api/v1/site/select2",
+        data: function (params:any) {
+
+          console.log(params)
+          var query = {
+            search: params.term,
+          }
+          // Query parameters will be ?search=[term]&type=public
+          console.log(query)
+          return query;
+        },
+        type: "get",
+        dataType: 'json',
+        delay: 100,
+        cache: true
+      },
+      placeholder: 'Search Site',
+      language: {
+          noResults: function () {
+              return "No records found!";
+          }
+      },
+    };
 
   }
 
@@ -181,6 +220,7 @@ export class NetworkElementComponent implements OnInit {
   
     this.neForm.patchValue({
       id: raw.id,
+      site_id: raw.site_id,
       code: raw.code,
       name: raw.name,
       type: raw.type,
@@ -196,6 +236,51 @@ export class NetworkElementComponent implements OnInit {
       new_node_name: raw.new_node_name,
 
     });
+
+    if(raw.site_id) {
+      this.defaultSite = [
+        {
+          id: raw.site_id,
+          text: raw.site_name
+        }
+      ];
+    }
+
+    console.log(this.defaultSite);
+
+    this.optionsSite = {
+      theme: "bootstrap",
+      multiple: false,
+      closeOnSelect: true,
+      width: '100%',
+      ajax: {
+        headers: {
+          "Authorization" : "Bearer "+this.tokenService.getToken(),
+          "Content-Type" : "application/json",
+        },
+        url: environment.API_URL+"api/v1/site/select2",
+        data: function (params:any) {
+
+          console.log(params)
+          var query = {
+            search: params.term,
+          }
+          // Query parameters will be ?search=[term]&type=public
+          console.log(query)
+          return query;
+        },
+        type: "get",
+        dataType: 'json',
+        delay: 100,
+        cache: true
+      },
+      placeholder: 'Search Site',
+      language: {
+          noResults: function () {
+              return "No records found!";
+          }
+      },
+    };
 
   }
 
@@ -251,87 +336,6 @@ export class NetworkElementComponent implements OnInit {
       console.log(this.neData)
       this.filtersLoaded = Promise.resolve(true);
     });
-
-    // this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => { dtInstance.clear(); });
-
-    // this.dtOptionsRectifier = {
-    //   destroy: true,
-    //   pagingType: 'full_numbers',
-    //   pageLength: 10,
-    //   serverSide: true,
-    //   processing: true,
-    //   // stateSave: true,
-    //   responsive: true,
-    //   // scrollX: true,
-    //   ajax: (dataTablesParameters: any, callback) => {
-
-    //     dataTablesParameters['network_element_code'] = ne.code;
-    //     dataTablesParameters['item_type'] = "Network Element";
-    //     console.log(dataTablesParameters)
-
-    //     this.rectifierItemService.list(dataTablesParameters).subscribe(resp => {
-    //       this.rectifier = resp.data;
-    //       console.log(resp)
-
-    //       callback({
-    //         recordsTotal: resp.recordsTotal,
-    //         recordsFiltered: resp.recordsFiltered,
-    //         data: []
-    //       });
-
-    //     });
-    //   },
-    //   columns: [ 
-    //     { data: 'rectifier_manufacturer', width: '10%'}, 
-    //     { data: 'rectifier_index_no', width: '10%'}, 
-    //     { data: 'rectifier_model', width: '10%'}, 
-    //     { data: 'rectifier_maintainer', width: '10%'}, 
-    //     { data: 'rectifier_status', width: '10%'}, 
-    //     { data: 'rectifier_date_installed', width: '10%'}, 
-    //     { data: 'rectifier_date_accepted', width: '10%'}, 
-    //   ],
-
-    // };
-
-
-
-    // this.dtOptionsBattery = {
-    //   destroy: true,
-    //   pagingType: 'full_numbers',
-    //   pageLength: 10,
-    //   serverSide: true,
-    //   processing: true,
-    //   scrollX: true,
-    //   ajax: (dataTablesParameters: any, callback) => {
-       
-    //     console.log(dataTablesParameters)
-    //     dataTablesParameters['network_element_code'] = ne.code;
-    //     dataTablesParameters['item_type'] = "Battery";
-    //     this.rectifierItemService.list(dataTablesParameters).subscribe(resp => {
-    //       this.battery = resp.data;
-    //       console.log(resp)
-
-    //       callback({
-    //         recordsTotal: resp.recordsTotal,
-    //         recordsFiltered: resp.recordsFiltered,
-    //         data: []
-    //       });
-    //     });
-
-    //   },
-    //   columns: [
-    //     { data: 'rectifier_manufacturer', width: '10%'}, 
-    //     { data: 'battery_manufacturer', width: '10%'}, 
-    //     { data: 'battery_index_no', width: '10%'}, 
-    //     { data: 'battery_model', width: '10%'}, 
-    //     { data: 'battery_maintainer', width: '10%'}, 
-    //     { data: 'battery_status', width: '10%'}, 
-    //     { data: 'battery_date_installed', width: '10%'}, 
-    //     { data: 'battery_date_accepted', width: '10%'}, 
-    //   ]
-    // };
-
-    // $('#dt1').DataTable().ajax.reload();
 
   
   }

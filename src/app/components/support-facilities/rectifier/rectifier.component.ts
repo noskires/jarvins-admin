@@ -404,74 +404,7 @@ export class RectifierComponent implements OnInit {
       remarks: raw.remarks,
 
     });
- 
-    // this.optionsNe = {
-    //   theme: "bootstrap",
-    //   multiple: true,
-    //   closeOnSelect: true,
-    //   width: '100%',
-    //   ajax: {
-    //     headers: {
-    //       "Authorization" : "Bearer "+this.tokenService.getToken(),
-    //       "Content-Type" : "application/json",
-    //     },
-    //     url: environment.API_URL+"api/v1/ne/select2",
-    //     data: function (params:any) {
 
-    //       console.log(params)
-    //       var query = {
-    //         search: params.term,
-    //       }
-    //       // Query parameters will be ?search=[term]&type=public
-    //       console.log(query)
-    //       return query;
-    //     },
-    //     type: "get",
-    //     dataType: 'json',
-    //     delay: 100,
-    //     cache: true
-    //   },
-    //   placeholder: 'Search NE',
-    //   language: {
-    //       noResults: function () {
-    //           return "No records found!";
-    //       }
-    //   },
-    // };
-
-    // this.optionsBattery = {
-    //   theme: "bootstrap",
-    //   multiple: true,
-    //   closeOnSelect: true,
-    //   width: '100%',
-    //   ajax: {
-    //     headers: {
-    //       "Authorization" : "Bearer "+this.tokenService.getToken(),
-    //       "Content-Type" : "application/json",
-    //     },
-    //     url: environment.API_URL+"api/v1/battery/select2",
-    //     data: function (params:any) {
-
-    //       console.log(params)
-    //       var query = {
-    //         search: params.term,
-    //       }
-    //       // Query parameters will be ?search=[term]&type=public
-    //       console.log(query)
-    //       return query;
-    //     },
-    //     type: "get",
-    //     dataType: 'json',
-    //     delay: 100,
-    //     cache: true
-    //   },
-    //   placeholder: 'Search Battery',
-    //   language: {
-    //       noResults: function () {
-    //           return "No records found!";
-    //       }
-    //   },
-    // };
 
     this.defaultSite = [
       {

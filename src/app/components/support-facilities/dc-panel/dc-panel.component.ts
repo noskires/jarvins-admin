@@ -52,13 +52,16 @@ export class DcPanelComponent implements OnInit {
   public optionsNe!: Options;
   public optionsRectifier!: Options;
   public optionsManufacturer!: Options;
+  public optionsSite!: Options;
 
   
   defaultNe!: any;
+  defaultSite: any = [];
   defaultRectifier!: any;
   defaultManufacturer!: any;
   value1!: any;
   title!: any;
+  
   
   params!: any;
   select2Params!: any;
@@ -116,6 +119,7 @@ export class DcPanelComponent implements OnInit {
 
     this.dcPanelForm = this.fb.group({
       id: ['', Validators.required],
+      site_id: ['', Validators.required],
       code: ['', Validators.required],
       rectifier: ['', Validators.required],
       manufacturer: ['', Validators.required],
@@ -146,6 +150,40 @@ export class DcPanelComponent implements OnInit {
       keyboard: true,
       size: 'xl',
     });
+
+    this.optionsSite = {
+      theme: "bootstrap",
+      multiple: false,
+      closeOnSelect: true,
+      width: '100%',
+      ajax: {
+        headers: {
+          "Authorization" : "Bearer "+this.tokenService.getToken(),
+          "Content-Type" : "application/json",
+        },
+        url: environment.API_URL+"api/v1/site/select2",
+        data: function (params:any) {
+
+          console.log(params)
+          var query = {
+            search: params.term,
+          }
+          // Query parameters will be ?search=[term]&type=public
+          console.log(query)
+          return query;
+        },
+        type: "get",
+        dataType: 'json',
+        delay: 100,
+        cache: true
+      },
+      placeholder: 'Search Site',
+      language: {
+          noResults: function () {
+              return "No records found!";
+          }
+      },
+    };
 
     this.optionsRectifier = {
       theme: "bootstrap",
@@ -217,6 +255,7 @@ export class DcPanelComponent implements OnInit {
 
     this.dcPanelForm = this.fb.group({
       id: [''],
+      site_id: [''],
       code: [''],
       rectifier: [''],
       manufacturer: [''],
@@ -250,6 +289,50 @@ export class DcPanelComponent implements OnInit {
       keyboard: true,
       size: 'xl',
     });
+
+    if(raw.dc_panel_site_id){
+      this.defaultSite = [
+        {
+          id: raw.dc_panel_site_id,
+          text: raw.site_name
+        }
+      ];
+    }
+    
+
+    this.optionsSite = {
+      theme: "bootstrap",
+      multiple: false,
+      closeOnSelect: true,
+      width: '100%',
+      ajax: {
+        headers: {
+          "Authorization" : "Bearer "+this.tokenService.getToken(),
+          "Content-Type" : "application/json",
+        },
+        url: environment.API_URL+"api/v1/site/select2",
+        data: function (params:any) {
+
+          console.log(params)
+          var query = {
+            search: params.term,
+          }
+          // Query parameters will be ?search=[term]&type=public
+          console.log(query)
+          return query;
+        },
+        type: "get",
+        dataType: 'json',
+        delay: 100,
+        cache: true
+      },
+      placeholder: 'Search Site',
+      language: {
+          noResults: function () {
+              return "No records found!";
+          }
+      },
+    };
 
     this.defaultRectifier = [
       {
@@ -335,6 +418,7 @@ export class DcPanelComponent implements OnInit {
   
     this.dcPanelForm.patchValue({
       id: raw.id,
+      site_id: raw.dc_panel_site_id,
       code: raw.code,
       rectifier: raw.rectifier_id,
       manufacturer: raw.manufacturer_id,
@@ -484,6 +568,8 @@ export class DcPanelComponent implements OnInit {
       ],
 
     };
+
+    
 
     this.dcPanelItemForm = this.fb.group({
       id: [''],

@@ -8,10 +8,10 @@ import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import * as $ from 'jquery'
 // import * as AdminLte from 'admin-lte';
+import { PermissionService } from '../permission/permission.service';
 
 declare const App: any;
 // declare var $: any;
-
 
 @Component({
   selector: 'app-sidebar',
@@ -20,13 +20,16 @@ declare const App: any;
 })
 export class SidebarComponent implements OnInit {
   userInfo!: any;
+  params!: any;
+  perms!: any;
 
   constructor(
     private http: HttpClient,
     public authService: AuthService,
     private modalService: NgbModal,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    public permissionService: PermissionService,
     ) {}
 
   ngOnInit(): void {
@@ -48,7 +51,15 @@ export class SidebarComponent implements OnInit {
       this.router.navigate(['login']);
     })
 
+
+    this.permissionService.list(this.params).subscribe(async resp=> {
+      console.log(resp)
+      this.perms = await resp;
+    })
+
   }
+
+
 
   
 

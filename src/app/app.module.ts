@@ -39,8 +39,12 @@ import { AcPanelComponent } from './components/support-facilities/ac-panel/ac-pa
 import { DcPanelComponent } from './components/support-facilities/dc-panel/dc-panel.component';
 import { ManufacturerComponent } from './components/manufacturer/manufacturer.component';
 
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { SvgComponent } from './components/svg/svg.component'
 
-
+import { HelperService } from './helper.service';
+import { NgxPermissionsModule } from 'ngx-permissions';
+import { PermissionComponent } from './components/permission/permission.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +74,8 @@ import { ManufacturerComponent } from './components/manufacturer/manufacturer.co
     AcPanelComponent,
     DcPanelComponent,
     ManufacturerComponent,
+    SvgComponent,
+    PermissionComponent,
   ],
   imports: [
     BrowserModule,
@@ -81,14 +87,16 @@ import { ManufacturerComponent } from './components/manufacturer/manufacturer.co
     NgbModule,
     NgApexchartsModule,
     NgSelect2Module,
-    Select2AuroraModule
+    Select2AuroraModule,
+    NgxPermissionsModule.forRoot()
 
   ],
   providers: [
+    HelperService,
     {
-      provide: HTTP_INTERCEPTORS,
+      provide: HTTP_INTERCEPTORS, 
       useClass: AuthInterceptor,
-      multi: true
+      multi: true,
     }
   ],
   bootstrap: [AppComponent]
