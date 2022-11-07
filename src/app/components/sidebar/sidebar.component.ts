@@ -41,15 +41,15 @@ export class SidebarComponent implements OnInit {
     // });
 
 
-    this.authService.me().subscribe(async resp=> {
-      console.log(resp)
-      this.userInfo = await resp.name;
-      console.log(this.userInfo)
-    }, error => {
-      alert(error.error.error)
-      console.log(error.error.error)
-      this.router.navigate(['login']);
-    })
+    // this.authService.me().subscribe(async resp=> {
+    //   console.log(resp)
+    //   this.userInfo = await resp.name;
+    //   console.log(this.userInfo)
+    // }, error => {
+    //   alert(error.error.error)
+    //   console.log(error.error.error)
+    //   this.router.navigate(['login']);
+    // })
 
 
     this.permissionService.list(this.params).subscribe(async resp=> {

@@ -45,6 +45,7 @@ import { SvgComponent } from './components/svg/svg.component'
 import { HelperService } from './helper.service';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { PermissionComponent } from './components/permission/permission.component';
+import { UserComponent } from './components/user/user.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,7 @@ import { PermissionComponent } from './components/permission/permission.componen
     ManufacturerComponent,
     SvgComponent,
     PermissionComponent,
+    UserComponent,
   ],
   imports: [
     BrowserModule,

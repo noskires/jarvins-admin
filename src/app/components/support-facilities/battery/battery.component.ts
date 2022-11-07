@@ -140,15 +140,16 @@ export class BatteryComponent implements OnInit {
     let individual_cell_voltage = this.batteryForm.get("individual_cell_voltage")?.value;
     let no_of_cells = 0;
 
-    if(individual_cell_voltage == 48){
+    if(individual_cell_voltage==48){
       no_of_cells = 1;
-    }else if(individual_cell_voltage=12){
+    }else if(individual_cell_voltage==12){
       no_of_cells = 4;
-    }else if(individual_cell_voltage=2){
+    }else if(individual_cell_voltage==2){
       no_of_cells = 24;
     }else{
       no_of_cells = 0;
     }
+    alert(no_of_cells)
 
     this.batteryForm.controls['no_of_cells'].setValue(no_of_cells);
  

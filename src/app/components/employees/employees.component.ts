@@ -136,7 +136,7 @@ export class EmployeesComponent implements OnInit {
 // console.log(process.env)
  
 
-    this.authService.me().subscribe(resp=> {
+    this.authService.me().subscribe(async resp=> {
       console.log(resp)
       // if(resp.message!="Authorized"){
       //   this.router.navigate(['login']);

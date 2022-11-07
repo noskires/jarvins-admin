@@ -21,7 +21,7 @@
     </div>
     </div> -->
     
-    <nav class="mt-2" *ngxPermissionsOnly="'DEVELOPER'">
+    <nav class="mt-2">
         
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
@@ -46,7 +46,8 @@
             </a>
         </li> -->
         
-        <li class="nav-item">
+        <li class="nav-item" *ngxPermissionsOnly="['can_read_employee', 'can_read_training', 'can_read_tte', 'can_read_sv']">
+
             <a href="#" class="nav-link"> 
             <i class="nav-icon fas fa-users"></i>
             <p>
@@ -55,21 +56,21 @@
                 </p>
             </a>
             <ul class="nav nav-treeview">
-                <li class="nav-item">
+                <li class="nav-item" *ngxPermissionsOnly="['can_read_employee']">
                     <a href="#" class="nav-link" routerLink="/employees" routerLinkActive="active">
                         <i class="nav-icon fas fa-user"></i>
                         <i class="nav-icon fa-pencil"></i>
                         <p>Employee Details</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *ngxPermissionsOnly="['can_read_training']">
                     <a href="#" class="nav-link" routerLink="/trainings" routerLinkActive="active">
                         <i class="nav-icon fas fa-certificate"></i>
                         <p>Trainings & Certs</p>
                     </a>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item" *ngxPermissionsOnly="['can_read_tte']">
                     <a href="#" class="nav-link" routerLink="/tools-test-equipments" routerLinkActive="active">
                         <i class="nav-icon fas fa-tools"></i>
                         <p>
@@ -78,7 +79,7 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item" *ngxPermissionsOnly="['can_read_sv']">
                     <a href="#" class="nav-link" routerLink="/service-vehicles" routerLinkActive="active">
                         <i class="nav-icon fas fa-car"></i>
                         <p>
@@ -89,7 +90,7 @@
             </ul>
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item" *ngxPermissionsOnly="['can_read_site']">
             <a href="#" class="nav-link" routerLink="/site" routerLinkActive="active">
                 <i class="nav-icon far fa-building"></i>
                 <p>
@@ -98,7 +99,7 @@
             </a>
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item" *ngxPermissionsOnly="['can_read_ne']">
             <a href="#" class="nav-link" routerLink="/network-element" routerLinkActive="active">
                 <i class="nav-icon fas fa-server"></i>
                 <p>
@@ -107,7 +108,10 @@
             </a>
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item" *ngxPermissionsOnly="['can_read_rectifier', 'can_read_battery', 'can_read_electrical_dc', 
+            'can_read_electrical_ac', 'can_read_acu', 'can_read_transformer', 'can_read_fire_extinguisher', 'can_read_inverter', 
+            'can_read_ups', 'can_read_surge_protection', 'can_read_ventilation_fan', 'can_read_shelter']">
+            
             <a href="#" class="nav-link" routerLinkActive="active">
             <i class="nav-icon fas fa-handshake"></i>
             <p>
@@ -116,73 +120,73 @@
                 </p>
             </a>
             <ul class="nav nav-treeview">
-                <li class="nav-item">
+                <li class="nav-item" *ngxPermissionsOnly="['can_read_rectifier']">
                     <a href="#" class="nav-link" routerLink="/support-facility/rectifier" routerLinkActive="active">
                         <i class="nav-icon fas fa-pallet"></i>
                         <p>Rectifier</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *ngxPermissionsOnly="['can_read_battery']">
                     <a href="#" class="nav-link" routerLink="/support-facility/battery" routerLinkActive="active">
                         <i class="nav-icon fas fa-battery-full"></i>
                         <p>Battery</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *ngxPermissionsOnly="['can_read_electrical_dc']">
                     <a href="#" class="nav-link" routerLink="/support-facility/dc-panel" routerLinkActive="active">
                         <i class="nav-icon fas fa-bolt"></i>
                         <p>Electrical Panel DC</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *ngxPermissionsOnly="['can_read_electrical_ac']">
                     <a href="#" class="nav-link" routerLink="/support-facility/ac-panel" routerLinkActive="active">
                         <i class="nav-icon fas fa-bolt"></i>
                         <p>Electrical Panel AC</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *ngxPermissionsOnly="['can_read_acu']">
                     <a href="pages/mailbox/read-mail.html" class="nav-link">
                         <i class="nav-icon fas fa-wind"></i>
                         <p>ACU</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *ngxPermissionsOnly="['can_read_transformer']">
                     <a href="pages/mailbox/read-mail.html" class="nav-link">
                         <i class="nav-icon fas fa-heartbeat"></i>
                         <p>Transformer</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *ngxPermissionsOnly="['can_read_fire_extinguisher']">
                     <a href="pages/mailbox/read-mail.html" class="nav-link">
                         <i class="nav-icon fas fa-fire-extinguisher"></i> 
                         <p>Fire Extinguisher</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *ngxPermissionsOnly="['can_read_inverter']">
                     <a href="pages/mailbox/read-mail.html" class="nav-link">
                         <i class="nav-icon fas fa-pallet"></i>
                         <p>Inverter</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *ngxPermissionsOnly="['can_read_ups']">
                     <a href="pages/mailbox/read-mail.html" class="nav-link">
                         <i class="nav-icon fas fa-certificate"></i>
                         <p>UPS</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *ngxPermissionsOnly="['can_read_surge_protection']">
                     <a href="pages/mailbox/read-mail.html" class="nav-link">
                         <i class="nav-icon fas fa-lock"></i>
                         <p>Surge Protection</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *ngxPermissionsOnly="['can_read_ventilation_fan']">
                     <a href="pages/mailbox/read-mail.html" class="nav-link">
                         <i class="nav-icon fas fa-fan"></i>
                         <p>Ventilation Fan</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *ngxPermissionsOnly="['can_read_shelter']">
                     <a href="pages/mailbox/read-mail.html" class="nav-link">
                         <i class="nav-icon fas fa-warehouse"></i>
                         <p>Shelter</p>
@@ -253,10 +257,19 @@
         </li>
 
         <li class="nav-item">
-            <a href="pages/kanban.html" class="nav-link">
+            <a href="#" routerLink="/permission" class="nav-link">
                 <i class="nav-icon fas fa-tasks"></i>
                 <p>
-                Roles and Permissions
+                Permissions
+                </p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="#" routerLink="/user" class="nav-link">
+                <i class="nav-icon fas fa-tasks"></i>
+                <p>
+                Users
                 </p>
             </a>
         </li>

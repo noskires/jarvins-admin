@@ -25,6 +25,8 @@ import { TteComponent } from './components/tte/tte.component';
 import { environment } from 'src/environments/environment';
 import { SvgComponent } from './components/svg/svg.component';
 import { NgxPermissionsGuard } from 'ngx-permissions';
+import { PermissionComponent } from './components/permission/permission.component';
+import { UserComponent } from './components/user/user.component';
 
 // environment.API_URL+
 
@@ -52,6 +54,8 @@ const routes: Routes = [
   { path: 'support-facility/dc-panel', component: DcPanelComponent },
   { path: 'support-facility/ac-panel', component: AcPanelComponent },
   { path: 'audit', component: AuditsComponent },
+  { path: 'permission', component: PermissionComponent },
+  { path: 'user', component: UserComponent },
   
 //   testing
   { path: 'datatables', component: DatatablesComponent },
